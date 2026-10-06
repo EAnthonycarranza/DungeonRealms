@@ -170,7 +170,7 @@ abstract class Actor extends GameEntity {
 
   static final _flashPaint = Paint()
     ..filterQuality = FilterQuality.medium
-    ..colorFilter = const ColorFilter.mode(Color(0xddffffff), BlendMode.srcATop);
+    ..colorFilter = const ColorFilter.mode(Color(0x99ffffff), BlendMode.srcATop);
 
   Paint? _paintFor() {
     if (flash > 0) return _flashPaint;

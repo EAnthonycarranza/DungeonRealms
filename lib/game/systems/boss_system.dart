@@ -1,7 +1,9 @@
 import 'package:flame/components.dart';
 
 import '../dungeon_realms_game.dart';
+import '../entities/actor.dart';
 import '../entities/enemy.dart';
+import '../entities/hero.dart';
 import '../entities/interactables.dart';
 import '../session.dart';
 import '../world/region_map.dart';
@@ -70,6 +72,15 @@ class BossSystem {
     if (_hud <= 0) {
       _hud = 0.1;
       _syncHud();
+    }
+  }
+
+  /// The hero hit a boss whose fight hasn't started: start it if the hero
+  /// is inside the arena.
+  void provoke(EnemyEntity boss, Actor source) {
+    if (source is! HeroEntity) return;
+    for (final a in arenas) {
+      if (a.boss == boss && !a.fighting && boss.alive && a.zone.contains(source.ground)) _engage(a);
     }
   }
 

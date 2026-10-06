@@ -35,6 +35,12 @@ class CombatSystem {
     String? abilityId,
   }) {
     if (!target.alive || target.isInvulnerable || multiplier <= 0) return 0;
+    // Bosses only take damage in their fight; a hit from inside the arena
+    // starts it, a hit from outside bounces off.
+    if (target is EnemyEntity && target.def.isBoss && !target.engaged) {
+      game.bosses.provoke(target, source);
+      if (!target.engaged) return 0;
+    }
     var dmg = source.attack * multiplier * (1 + source.damageBonus);
     if (source.faction == Faction.enemy) dmg *= game.difficulty.damage;
     final crit = canCrit && _rng.nextDouble() < source.critChance;
@@ -47,7 +53,8 @@ class CombatSystem {
     final amount = math.max(1, dmg.roundToDouble()).toDouble();
 
     target.hp -= amount;
-    target.flash = tick ? 0.06 : 0.12;
+    // Damage-over-time ticks don't flash, so a burning boss stays readable.
+    if (!tick) target.flash = 0.09;
     target.sinceHurt = 0;
     target.sinceCombat = 0;
     source.sinceCombat = 0;

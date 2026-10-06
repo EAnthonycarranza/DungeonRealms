@@ -164,6 +164,20 @@ void main() {
     expect(game.collision.isTagEnabled('gate:grizzlefang'), isFalse);
   });
 
+  testWithGame<DungeonRealmsGame>('an idle boss ignores hits from outside its arena and wakes up to hits from inside', create, (game) async {
+    await game.ready();
+    final arena = game.bosses.arenas.single;
+    final boss = arena.boss!;
+    game.hero.ground.setFrom(arena.zone.center + Vector2(0, 12));
+    expect(game.combat.hit(game.hero, boss, 1), 0);
+    expect(boss.hp, boss.maxHp);
+    expect(arena.fighting, isFalse);
+    // Just inside the arena, short of the spot that triggers the fight.
+    game.hero.ground.setFrom(arena.zone.center + Vector2(0, 6));
+    expect(game.combat.hit(game.hero, boss, 1), greaterThan(0));
+    expect(arena.fighting, isTrue);
+  });
+
   testWithGame<DungeonRealmsGame>("the bramble gate seals Grizzlefang's hollow", create, (game) async {
     await game.ready();
     final inside = game.bosses.arenas.single.zone.center + Vector2(0, 4);
