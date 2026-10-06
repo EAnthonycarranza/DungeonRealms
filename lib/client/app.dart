@@ -10,12 +10,36 @@ import 'screens/hero_select_screen.dart';
 import 'screens/title_screen.dart';
 import 'theme.dart';
 
+/// Developer start overrides for quickstart sessions (see main.dart).
+class DevStart {
+  const DevStart({this.waypoint, this.level});
+
+  /// Waypoint id to start at (unlocked on the fly).
+  final String? waypoint;
+  final int? level;
+
+  bool get isEmpty => waypoint == null && level == null;
+
+  void applyTo(HeroProfile profile, GameData data) {
+    final level = this.level;
+    if (level != null) profile.level = level.clamp(1, data.progression.levelCap);
+    final waypoint = this.waypoint;
+    if (waypoint != null) {
+      profile.waypoints.add(waypoint);
+      profile.lastWaypoint = waypoint;
+      // A brand-new hero starts at player_start; pretend we've played.
+      profile.playSeconds = 1;
+    }
+  }
+}
+
 /// Root widget: loads content, then routes Title -> Hero Select -> Game.
 class DungeonRealmsApp extends StatelessWidget {
-  const DungeonRealmsApp({super.key, this.saves, this.quickstart = false});
+  const DungeonRealmsApp({super.key, this.saves, this.quickstart = false, this.devStart = const DevStart()});
 
   final SaveRepository? saves;
   final bool quickstart;
+  final DevStart devStart;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +47,17 @@ class DungeonRealmsApp extends StatelessWidget {
       title: 'Dungeon Realms',
       debugShowCheckedModeBanner: false,
       theme: DR.theme(),
-      home: _Boot(saves: saves ?? LocalSaveRepository(), quickstart: quickstart),
+      home: _Boot(saves: saves ?? LocalSaveRepository(), quickstart: quickstart, devStart: devStart),
     );
   }
 }
 
 class _Boot extends StatefulWidget {
-  const _Boot({required this.saves, required this.quickstart});
+  const _Boot({required this.saves, required this.quickstart, required this.devStart});
 
   final SaveRepository saves;
   final bool quickstart;
+  final DevStart devStart;
 
   @override
   State<_Boot> createState() => _BootState();
@@ -63,15 +88,16 @@ class _BootState extends State<_Boot> {
         _data = data;
         _heroes = heroes;
       });
-      if (widget.quickstart) _startNew('ranger', 'leafwarden');
+      if (widget.quickstart) _startNew('ranger', 'leafwarden', dev: widget.devStart);
     } catch (e, s) {
       debugPrint('Failed to load game data: $e\n$s');
       setState(() => _error = e);
     }
   }
 
-  void _startNew(String heroClass, String look) {
+  void _startNew(String heroClass, String look, {DevStart dev = const DevStart()}) {
     final profile = HeroProfile.create(_data!, heroClass, look, ItemFactory(_data!));
+    dev.applyTo(profile, _data!);
     setState(() {
       _choosing = false;
       _playing = profile;

@@ -42,25 +42,35 @@ class InputState {
     if (touch.value != v) touch.value = v;
   }
 
-  final List<AbilityRequest> _queue = [];
+  /// How long a press waits for the hero to be free (input buffering: a skill
+  /// pressed during another action still fires when that action ends).
+  static const bufferWindow = 0.4;
+
+  final List<(AbilityRequest, double)> _queue = [];
   bool _interact = false;
   bool _potion = false;
 
   void requestAbility(AbilityRequest r) {
     // Keep only the newest request per slot so mashing doesn't queue up.
     _queue
-      ..removeWhere((q) => q.slot == r.slot)
-      ..add(r);
+      ..removeWhere((q) => q.$1.slot == r.slot)
+      ..add((r, 0));
+  }
+
+  /// Offers each buffered request (oldest first) to [tryRun], which returns
+  /// true when the request is finished with (started or impossible). The
+  /// rest wait until they outlive [bufferWindow].
+  void runRequests(double dt, bool Function(AbilityRequest r) tryRun) {
+    final pending = List.of(_queue);
+    _queue.clear();
+    for (final (r, age) in pending) {
+      if (tryRun(r)) continue;
+      if (age + dt <= bufferWindow) _queue.add((r, age + dt));
+    }
   }
 
   void requestInteract() => _interact = true;
   void requestPotion() => _potion = true;
-
-  List<AbilityRequest> takeRequests() {
-    final out = List<AbilityRequest>.of(_queue);
-    _queue.clear();
-    return out;
-  }
 
   bool takeInteract() {
     final v = _interact;

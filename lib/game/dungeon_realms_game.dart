@@ -283,6 +283,12 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
     }
   }
 
+  /// Waypoint stones are sanctuaries: monsters don't notice a hero standing
+  /// next to one (damage still pulls them), so respawning is never a trap.
+  static const sanctuaryRadius = 5.0;
+
+  bool inSanctuary(Vector2 p) => waypoints.any((w) => w.ground.distanceTo(p) < sanctuaryRadius);
+
   Vector2 _waypointSpawn(String id) {
     final wp = waypoints.where((w) => w.waypointId == id).firstOrNull;
     if (wp == null) return map.objectsOfType('player_start').first.center;

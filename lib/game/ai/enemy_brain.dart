@@ -84,7 +84,7 @@ class EnemyBrain {
         _aggro(e.eventTarget!);
       } else if (hero.alive && (!def.isBoss || e.engaged)) {
         final d = hero.ground.distanceTo(e.ground);
-        if (d < def.aggroRange) _aggro(hero, assist: true);
+        if (d < def.aggroRange && !game.inSanctuary(hero.ground)) _aggro(hero, assist: true);
       }
     } else if (e.eventTarget != null && e.target == e.eventTarget && hero.alive && hero.ground.distanceTo(e.ground) < 3.5) {
       e.target = hero;

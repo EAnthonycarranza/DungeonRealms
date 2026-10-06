@@ -140,8 +140,7 @@ class ChestEntity extends PropBackedEntity implements Interactable {
 
 /// Waypoint stone: discover once, then fast-travel from any waypoint.
 class WaypointEntity extends PropBackedEntity implements Interactable {
-  WaypointEntity(super.placed, super.image, {required this.activeImage, required this.waypointId, required this.waypointName, required bool discovered})
-    : discovered = discovered {
+  WaypointEntity(super.placed, super.image, {required this.activeImage, required this.waypointId, required this.waypointName, required this.discovered}) {
     if (discovered) image = activeImage;
   }
 

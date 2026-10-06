@@ -91,6 +91,30 @@ void main() {
     expect(game.hero.ultimate, lessThan(game.hero.ultimateMax));
   });
 
+  testWithGame<DungeonRealmsGame>('a skill pressed mid-attack is buffered and cuts the attack short', create, (game) async {
+    await game.ready();
+    game.input.attackHeld = true;
+    game.input.mouseWorld = game.hero.ground + Vector2(3, 3);
+    run(game, 0.05);
+    expect(game.hero.cast, isNotNull, reason: 'the held basic attack should be winding up');
+    game.input.requestAbility(AbilityRequest(AbilitySlotId.skill1, aimWorld: game.hero.ground + Vector2(3, 3)));
+    run(game, 0.1);
+    game.input.attackHeld = false;
+    final skill = game.hero.abilityFor(AbilitySlotId.skill1)!;
+    expect(game.hero.cooldownOf(skill.id), greaterThan(0));
+  });
+
+  testWithGame<DungeonRealmsGame>('monsters ignore a hero resting at a waypoint', create, (game) async {
+    await game.ready();
+    final stone = game.waypoints.firstWhere((w) => w.waypointId == 'snagtooth_camp');
+    game.hero.ground.setFrom(stone.ground + Vector2(0.9, 0.9));
+    game.collision.resolve(game.hero.ground, 0.3);
+    final hp = game.hero.hp;
+    run(game, 4);
+    expect(game.enemies.where((e) => e.target == game.hero), isEmpty);
+    expect(game.hero.hp, hp);
+  });
+
   testWithGame<DungeonRealmsGame>('talking to Bramble offers and accepts the first quest', create, (game) async {
     await game.ready();
     final bramble = game.npcs.firstWhere((n) => n.def.id == 'captain_bramble');
@@ -138,6 +162,34 @@ void main() {
     expect(boss.alive, isFalse);
     expect(game.profile.bossKills, contains('normal:grizzlefang'));
     expect(game.collision.isTagEnabled('gate:grizzlefang'), isFalse);
+  });
+
+  testWithGame<DungeonRealmsGame>("the bramble gate seals Grizzlefang's hollow", create, (game) async {
+    await game.ready();
+    final inside = game.bosses.arenas.single.zone.center + Vector2(0, 4);
+    final outside = game.waypoints.firstWhere((w) => w.waypointId == 'grizzlefang_hollow').ground + Vector2(0.9, 0.9);
+
+    // Flood fill the walkable space a hero-sized circle can reach.
+    bool reachable() {
+      const step = 0.25, radius = 0.3;
+      final cols = (game.map.width / step).floor(), rows = (game.map.height / step).floor();
+      final seen = List.filled(cols * rows, false);
+      final queue = <(int, int)>[((inside.x / step).floor(), (inside.y / step).floor())];
+      final goal = ((outside.x / step).floor(), (outside.y / step).floor());
+      while (queue.isNotEmpty) {
+        final (cx, cy) = queue.removeLast();
+        if (cx < 0 || cy < 0 || cx >= cols || cy >= rows || seen[cy * cols + cx]) continue;
+        seen[cy * cols + cx] = true;
+        if (game.collision.collides((cx + 0.5) * step, (cy + 0.5) * step, radius)) continue;
+        if ((cx - goal.$1).abs() <= 1 && (cy - goal.$2).abs() <= 1) return true;
+        queue.addAll([(cx + 1, cy), (cx - 1, cy), (cx, cy + 1), (cx, cy - 1)]);
+      }
+      return false;
+    }
+
+    expect(reachable(), isTrue, reason: 'the hollow must be open while the gate is down');
+    game.collision.setTagEnabled('gate:grizzlefang', true);
+    expect(reachable(), isFalse, reason: 'nothing may leave the hollow while the gate is up');
   });
 
   testWithGame<DungeonRealmsGame>('the wagon event spawns waves and can be saved', create, (game) async {

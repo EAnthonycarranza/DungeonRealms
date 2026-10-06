@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-
 import 'actor.dart';
 
 /// An immobile ally that enemies try to destroy (Pip's wagon).

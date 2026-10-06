@@ -196,6 +196,10 @@ String terrainAtCorner(int i, int j) {
   // Trampled ground in the goblin camp and Grizzlefang's arena.
   if (Ellipse(campCenter, 7.5, 6.0).value(p) < 1 + n * 0.5) return 'dirt';
   if (Ellipse(arenaCenter, 6.5, 6.5).value(p) < 1 + n * 0.5) return 'dirt';
+  // Grizzlefang's hollow is a sealed bowl: forest all around except the road
+  // in from the south, which the bramble gate closes during the fight.
+  final toArena = p.dist(arenaCenter);
+  if (toArena > 8.0 + n * 0.6 && toArena < 12.5 && distToPolyline(p, roadWest) > 2.0 && distToPolyline(p, stream) > 3.0) return 'forest';
   if (!isOpen(p)) return 'forest';
   return 'grass';
 }
@@ -686,9 +690,11 @@ void setPieces(World w) {
     if (toEntrance < 3.2) continue;
     w.place(pick(['rock_large_1', 'rock_large_2', 'rock_medium_1']), p, radius: 0.9);
   }
+  // Just outside the forest ring, where the road is wide enough to walk
+  // around the stone.
   w.place(
     'waypoint_stone',
-    const P(15.6, 24.6),
+    const P(16.6, 27.4),
     radius: 0.9,
     layer: 'interactives',
     type: 'waypoint',
@@ -696,8 +702,8 @@ void setPieces(World w) {
     props: {'waypoint': 'grizzlefang_hollow'},
   );
   // Arena gate brambles (hidden until the fight starts).
-  for (var k = -1; k <= 1; k++) {
-    w.place('brambles_u', P(14.2 + k * 1.2, 21.6), radius: 0.3, layer: 'interactives', type: 'boss_gate', props: {'boss': 'grizzlefang'});
+  for (var k = -2; k <= 2; k++) {
+    w.place('brambles_u', P(14.2 + k * 1.1, 21.6), radius: 0.3, layer: 'interactives', type: 'boss_gate', props: {'boss': 'grizzlefang'});
   }
 }
 
@@ -740,7 +746,7 @@ List<GameObj> gameplayObjects() {
     zone('spawn', 'camp_gate', const P(41.0, 25.0), 5, 3, {'pack': 'goblin_camp_guard', 'level': '5', 'respawn': '75'}),
     zone('spawn', 'warboss', const P(41.0, 15.5), 3, 2, {'pack': 'warboss_snagtooth', 'level': '6', 'respawn': '240'}),
     zone('spawn', 'bridge_patrol', const P(18.5, 37.5), 4, 4, {'pack': 'goblin_raiders', 'level': '5', 'respawn': '60'}),
-    zone('spawn', 'boss_approach', const P(15.0, 28.0), 4, 4, {'pack': 'goblin_ritual', 'level': '6', 'respawn': '75'}),
+    zone('spawn', 'boss_approach', const P(12.5, 33.0), 4, 4, {'pack': 'goblin_ritual', 'level': '6', 'respawn': '75'}),
     zone('spawn', 'hollow_hoarders', const P(57.5, 23.5), 4, 3, {'pack': 'goblin_hoarders', 'level': '5', 'respawn': '120'}),
     zone('spawn', 'stream_patrol', const P(29.5, 30.0), 4, 4, {'pack': 'goblin_scouts', 'level': '4', 'respawn': '60'}),
     // Public event & boss arena.

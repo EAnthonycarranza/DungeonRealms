@@ -22,6 +22,9 @@ class HeroAbilitySlot {
   final int unlockLevel;
 }
 
+/// Outcome of trying to start an ability from input.
+enum _Attempt { started, blocked, rejected }
+
 /// The player's hero. Reads [InputState] each frame.
 class HeroEntity extends Actor {
   HeroEntity({required this.def, required this.profile, required CharacterSheet sheet, required Vector2 ground})
@@ -188,9 +191,7 @@ class HeroEntity extends Actor {
       if (anim == 'walk' || animator!.finished) playAnim('idle');
     }
 
-    for (final r in input.takeRequests()) {
-      _tryAbility(r);
-    }
+    input.runRequests(dt, (r) => _tryAbility(r) != _Attempt.blocked);
     if (input.attackHeld) _tryAbility(AbilityRequest(AbilitySlotId.basic, aimWorld: input.touchMode ? null : input.mouseWorld));
     if (input.takePotion()) drinkPotion();
     if (input.takeInteract()) {
@@ -199,21 +200,30 @@ class HeroEntity extends Actor {
     }
   }
 
-  bool _tryAbility(AbilityRequest r) {
+  /// Tries to start the ability for [r]. Blocked attempts (busy or cooling
+  /// down) stay buffered in [InputState] for a moment; rejected ones are not
+  /// retried.
+  _Attempt _tryAbility(AbilityRequest r) {
     if (!unlocked(r.slot)) {
       if (r.slot != AbilitySlotId.basic) {
         final s = slots.where((s) => s.slot == r.slot).firstOrNull;
         if (s != null) game.session.toast('${s.ability.name} unlocks at level ${s.unlockLevel}');
       }
-      return false;
+      return _Attempt.rejected;
     }
     final a = abilityFor(r.slot);
-    if (a == null || !canAct) return false;
-    if (!ready(a)) return false;
+    if (a == null) return _Attempt.rejected;
     if (a.isUltimate && !ultimateReady) {
-      game.session.toast('Arrow Storm needs a full ultimate meter');
-      return false;
+      game.session.toast('${a.name} needs a full ultimate meter');
+      return _Attempt.rejected;
     }
+    // Skills and dodges cut a basic attack short, and a dodge also cuts a
+    // skill's follow-through: responsiveness beats one more arrow.
+    final c = cast;
+    if (c != null && r.slot != AbilitySlotId.basic && ready(a)) {
+      if (c.ability.id == basicAbility?.id || (r.slot == AbilitySlotId.dodge && c.released)) interruptCast();
+    }
+    if (!canAct || !ready(a)) return _Attempt.blocked;
     if (gatherTarget != null) cancelGather();
     final aim = _resolveAim(a, r);
     final started = game.abilities.begin(this, a, aimPoint: aim);
@@ -225,7 +235,7 @@ class HeroEntity extends Actor {
         _attackMood = 0.7;
       }
     }
-    return started;
+    return started ? _Attempt.started : _Attempt.blocked;
   }
 
   Vector2 _resolveAim(AbilityDef a, AbilityRequest r) {
