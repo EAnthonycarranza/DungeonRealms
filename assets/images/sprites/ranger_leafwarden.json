@@ -1,0 +1,135 @@
+{
+  "image": "ranger_leafwarden.png",
+  "frameWidth": 264,
+  "frameHeight": 264,
+  "columns": 15,
+  "pixelRatio": 1.5,
+  "anchor": [
+    132.0,
+    222.0
+  ],
+  "visualHeight": 90.0,
+  "facings": [
+    "front",
+    "back"
+  ],
+  "animations": {
+    "idle": {
+      "fps": 6.0,
+      "loop": true,
+      "front": [
+        0,
+        6
+      ],
+      "back": [
+        6,
+        6
+      ]
+    },
+    "walk": {
+      "fps": 12.0,
+      "loop": true,
+      "front": [
+        12,
+        8
+      ],
+      "back": [
+        20,
+        8
+      ]
+    },
+    "shoot": {
+      "fps": 16.0,
+      "loop": false,
+      "events": {
+        "release": 3
+      },
+      "front": [
+        28,
+        5
+      ],
+      "back": [
+        33,
+        5
+      ]
+    },
+    "charge": {
+      "fps": 10.0,
+      "loop": true,
+      "front": [
+        38,
+        4
+      ],
+      "back": [
+        42,
+        4
+      ]
+    },
+    "volley": {
+      "fps": 14.0,
+      "loop": false,
+      "events": {
+        "release": 4
+      },
+      "front": [
+        46,
+        6
+      ],
+      "back": [
+        52,
+        6
+      ]
+    },
+    "cast": {
+      "fps": 12.0,
+      "loop": false,
+      "events": {
+        "release": 3
+      },
+      "front": [
+        58,
+        6
+      ],
+      "back": [
+        64,
+        6
+      ]
+    },
+    "dodge": {
+      "fps": 16.0,
+      "loop": false,
+      "front": [
+        70,
+        6
+      ],
+      "back": [
+        76,
+        6
+      ]
+    },
+    "hit": {
+      "fps": 12.0,
+      "loop": false,
+      "front": [
+        82,
+        3
+      ],
+      "back": [
+        85,
+        3
+      ]
+    },
+    "death": {
+      "fps": 10.0,
+      "loop": false,
+      "front": [
+        88,
+        7
+      ],
+      "back": [
+        95,
+        7
+      ]
+    }
+  }
+}

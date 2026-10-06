@@ -1,0 +1,146 @@
+{
+  "$schema_doc": "docs/systems/content.md#heroes",
+  "heroes": [
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "kicker": "RANGED • TRAPS",
+      "role": "Wildshot Archer",
+      "description": "Mobile ranged damage with piercing arrows, nature traps, rapid repositioning, and screen-clearing volleys.",
+      "tone": "green",
+      "playable": true,
+      "skills": ["Precision Shot", "Multi-Shot", "Vine Trap", "Arrow Storm"],
+      "baseStats": {
+        "maxHp": 120,
+        "attack": 12,
+        "armor": 10,
+        "critChance": 0.08,
+        "critDamage": 0.6,
+        "attackSpeed": 1.0,
+        "moveSpeed": 4.4,
+        "hpRegen": 1.5
+      },
+      "growth": { "maxHp": 14, "attack": 2.4, "armor": 2 },
+      "basicAbility": "ranger_quick_shot",
+      "dodgeAbility": "ranger_backflip",
+      "abilities": [
+        { "id": "ranger_precision_shot", "unlockLevel": 1 },
+        { "id": "ranger_multi_shot", "unlockLevel": 2 },
+        { "id": "ranger_vine_trap", "unlockLevel": 3 },
+        { "id": "ranger_arrow_storm", "unlockLevel": 4, "ultimate": true }
+      ],
+      "startingGear": [
+        { "base": "short_bow", "rarity": "common" },
+        { "base": "leaf_tunic", "rarity": "common" }
+      ],
+      "looks": [
+        {
+          "id": "leafwarden",
+          "name": "Leafwarden",
+          "sprite": "ranger_leafwarden",
+          "sheet": "heroes/ranger_leafwarden.webp",
+          "expressions": {
+            "idle": [178, 105, 78],
+            "stunned": [470, 140, 78],
+            "attack": [722, 135, 74],
+            "ultimate": [240, 372, 78],
+            "panic": [692, 372, 78]
+          }
+        },
+        {
+          "id": "wildheart",
+          "name": "Wildheart",
+          "sprite": "ranger_wildheart",
+          "sheet": "heroes/ranger_wildheart.webp",
+          "expressions": {
+            "idle": [152, 88, 82],
+            "stunned": [440, 112, 82],
+            "attack": [718, 100, 82],
+            "ultimate": [262, 358, 82],
+            "panic": [695, 372, 82]
+          }
+        }
+      ]
+    },
+    {
+      "id": "monk",
+      "name": "Monk",
+      "kicker": "MELEE • SUPPORT",
+      "role": "Spirit Brawler",
+      "description": "A fast close-range fighter who channels spirit animals, combo chains, and protective bursts.",
+      "tone": "gold",
+      "playable": false,
+      "skills": ["Palm Strike", "Spirit Dash", "Guardian Beast", "Thousand Hands"],
+      "looks": [{ "id": "default", "name": "Spirit Brawler", "sheet": "heroes/monk.webp", "expressions": { "idle": [145, 128, 92] } }]
+    },
+    {
+      "id": "druid",
+      "name": "Druid",
+      "kicker": "NATURE • HYBRID",
+      "role": "Wildkeeper",
+      "description": "Nature magic, healing groves, roots, and spirit companions make the Druid flexible in solo and group play.",
+      "tone": "green",
+      "playable": false,
+      "skills": ["Thorn Lash", "Healing Grove", "Bear Form", "Wrath of Nature"],
+      "looks": [{ "id": "default", "name": "Wildkeeper", "sheet": "heroes/druid.webp", "expressions": { "idle": [155, 108, 86] } }]
+    },
+    {
+      "id": "paladin",
+      "name": "Paladin",
+      "kicker": "TANK • HOLY",
+      "role": "Radiant Defender",
+      "description": "A shield-first frontline hero built around protection, radiant slams, team barriers, and heroic saves.",
+      "tone": "blue",
+      "playable": false,
+      "skills": ["Shield Bash", "Holy Hammer", "Guardian Wall", "Judgment"],
+      "looks": [
+        { "id": "valkyrie", "name": "Valkyrie", "sheet": "heroes/paladin_valkyrie.webp", "expressions": { "idle": [172, 110, 86] } },
+        { "id": "sunhammer", "name": "Sunhammer", "sheet": "heroes/paladin_sunhammer.webp", "expressions": { "idle": [180, 100, 86] } }
+      ]
+    },
+    {
+      "id": "chronomancer",
+      "name": "Chronomancer",
+      "kicker": "CONTROL • MAGIC",
+      "role": "Time-Bending Caster",
+      "description": "A future hero concept centered on clocks, delayed bursts, time fields, and reality-warping crowd control.",
+      "tone": "gold",
+      "playable": false,
+      "skills": ["Time Bolt", "Slow Field", "Rewind", "Clockstorm"],
+      "looks": [{ "id": "default", "name": "Clockwork Sage", "sheet": "heroes/chronomancer.webp", "expressions": { "idle": [150, 132, 92] } }]
+    },
+    {
+      "id": "sorceress",
+      "name": "Sorceress",
+      "kicker": "FROST • LIGHTNING",
+      "role": "Elemental Caster",
+      "description": "Blue/cyan elemental magic: frost, lightning, crystals, storms, and high-area damage.",
+      "tone": "blue",
+      "playable": false,
+      "skills": ["Frost Spike", "Chain Lightning", "Ice Nova", "Blizzard"],
+      "looks": [{ "id": "default", "name": "Frostweaver", "sheet": "heroes/sorceress.webp", "expressions": { "idle": [190, 92, 86] } }]
+    },
+    {
+      "id": "barbarian",
+      "name": "Barbarian",
+      "kicker": "BRUISER • AOE",
+      "role": "Rage Juggernaut",
+      "description": "Build Rage by staying in the fight, then cash it out through brutal cleaves, charges, and huge axe attacks.",
+      "tone": "red",
+      "playable": false,
+      "skills": ["Cleave", "Whirlwind", "Ground Slam", "Berserker Rampage"],
+      "looks": [{ "id": "default", "name": "Rage Juggernaut", "sheet": "heroes/barbarian.webp", "expressions": { "idle": [105, 88, 88] } }]
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "kicker": "BURST • MOBILITY",
+      "role": "Shadow Trickster",
+      "description": "Fast dagger combat, poison, shadow movement, and burst windows built around precise positioning.",
+      "tone": "pink",
+      "playable": false,
+      "skills": ["Backstab", "Poison Blade", "Smoke Bomb", "Assassinate"],
+      "looks": [{ "id": "default", "name": "Shadow Trickster", "sheet": "heroes/rogue.webp", "expressions": { "idle": [195, 70, 82] } }]
+    }
+  ]
+}

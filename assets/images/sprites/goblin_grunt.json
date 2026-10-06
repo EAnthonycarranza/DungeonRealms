@@ -1,0 +1,81 @@
+{
+  "image": "goblin_grunt.png",
+  "frameWidth": 216,
+  "frameHeight": 216,
+  "columns": 18,
+  "pixelRatio": 1.5,
+  "anchor": [
+    108.0,
+    186.0
+  ],
+  "visualHeight": 66.0,
+  "facings": [
+    "front",
+    "back"
+  ],
+  "animations": {
+    "idle": {
+      "fps": 6.0,
+      "loop": true,
+      "front": [
+        0,
+        6
+      ],
+      "back": [
+        6,
+        6
+      ]
+    },
+    "walk": {
+      "fps": 12.0,
+      "loop": true,
+      "front": [
+        12,
+        8
+      ],
+      "back": [
+        20,
+        8
+      ]
+    },
+    "attack": {
+      "fps": 14.0,
+      "loop": false,
+      "events": {
+        "hit": 3
+      },
+      "front": [
+        28,
+        6
+      ],
+      "back": [
+        34,
+        6
+      ]
+    },
+    "hit": {
+      "fps": 12.0,
+      "loop": false,
+      "front": [
+        40,
+        3
+      ],
+      "back": [
+        43,
+        3
+      ]
+    },
+    "death": {
+      "fps": 10.0,
+      "loop": false,
+      "front": [
+        46,
+        7
+      ],
+      "back": [
+        53,
+        7
+      ]
+    }
+  }
+}

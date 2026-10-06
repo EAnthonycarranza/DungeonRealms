@@ -1,0 +1,49 @@
+{
+  "$schema_doc": "docs/systems/quests.md#npcs",
+  "npcs": [
+    {
+      "id": "captain_bramble",
+      "name": "Captain Bramble",
+      "title": "Gate Captain of Buckleburg",
+      "sprite": "npc_bramble",
+      "color": "#4fa3ff",
+      "greeting": "Halt! Oh, it's you. Carry on. Heroically.",
+      "barks": [
+        "Keep your bow strung and your boots laced.",
+        "I'd go myself, but somebody has to guard this... gate.",
+        "Report any goblins. Or bears. ESPECIALLY bears."
+      ],
+      "services": ["respec_difficulty"]
+    },
+    {
+      "id": "hilda_hammerbottom",
+      "name": "Hilda Hammerbottom",
+      "title": "Blacksmith",
+      "sprite": "npc_hilda",
+      "color": "#ff8a2b",
+      "greeting": "Mind the anvil. It bites.",
+      "barks": ["Copper! Bring me copper!", "Rocks are just ore that hasn't met me yet.", "Hmph. Your bow needs more hitting."],
+      "services": ["salvage"]
+    },
+    {
+      "id": "granny_gristle",
+      "name": "Granny Gristle",
+      "title": "Herbalist (Mostly Licensed)",
+      "sprite": "npc_granny",
+      "color": "#82f16d",
+      "greeting": "Come in, dearie. Don't touch the purple jar.",
+      "barks": ["A potion a day keeps the goblins at bay. Mostly.", "Sniffleleaf! Achoo! That's how you know it's fresh.", "Have you eaten? You look peckish. And stabbed."],
+      "services": ["refill_potions"]
+    },
+    {
+      "id": "pip_puddlefoot",
+      "name": "Pip Puddlefoot",
+      "title": "Traveling Merchant (Currently Stationary)",
+      "sprite": "npc_pip",
+      "color": "#ffc94f",
+      "greeting": "Oh thank goodness, a hero! My wagon! My wheels! My dignity!",
+      "barks": ["They took my left wheel. Who needs ONE wheel?!", "I'll pay! In coins! And gratitude! Mostly coins!", "Is it safe? It's not safe. Is it safe now?"],
+      "services": ["sell"]
+    }
+  ]
+}

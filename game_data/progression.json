@@ -1,0 +1,25 @@
+{
+  "$schema_doc": "docs/systems/progression.md",
+  "levelCap": 60,
+  "xpCurve": { "base": 80, "exponent": 1.6 },
+  "ultimate": { "max": 100, "onHurt": 2 },
+  "combat": {
+    "armorBase": 60,
+    "armorPerAttackerLevel": 12,
+    "regenOutOfCombatDelay": 4,
+    "regenOutOfCombatPct": 0.04,
+    "critMultiplierBase": 1.0
+  },
+  "difficulties": [
+    { "id": "normal", "name": "Normal", "tagline": "Campaign", "hp": 1.0, "damage": 1.0, "xp": 1.0, "gold": 1.0, "rarityBonus": 0, "mechanics": [] },
+    { "id": "spicy", "name": "Spicy", "icon": "🌶", "tagline": "New mechanics", "unlock": "grizzlefang", "hp": 1.6, "damage": 1.35, "xp": 1.5, "gold": 1.4, "rarityBonus": 0.4, "mechanics": ["hot_sauce"] },
+    { "id": "very_spicy", "name": "Very Spicy", "icon": "🌶🌶", "tagline": "More elites", "unlock": "spicy:grizzlefang", "hp": 2.4, "damage": 1.8, "xp": 2.2, "gold": 1.9, "rarityBonus": 0.9, "mechanics": ["hot_sauce", "elite_packs"] },
+    { "id": "ridiculous", "name": "Ridiculous", "icon": "💀", "tagline": "Serious challenge", "unlock": "very_spicy:grizzlefang", "hp": 3.8, "damage": 2.5, "xp": 3.2, "gold": 2.6, "rarityBonus": 1.6, "mechanics": ["hot_sauce", "elite_packs", "angry_trees"] },
+    { "id": "why", "name": "Why Would You Do This?", "icon": "👑", "tagline": "Endgame", "unlock": "ridiculous:grizzlefang", "hp": 6.0, "damage": 3.4, "xp": 4.5, "gold": 3.5, "rarityBonus": 2.5, "mechanics": ["hot_sauce", "elite_packs", "angry_trees"] }
+  ],
+  "mechanics": [
+    { "id": "hot_sauce", "name": "Hot Sauce", "description": "Slain enemies leave a puddle of hot sauce that burns for 3 seconds." },
+    { "id": "elite_packs", "name": "Elite Packs", "description": "Every pack has one empowered member with +100% health." },
+    { "id": "angry_trees", "name": "Angry Trees", "description": "Coming soon. The trees are still deciding how angry to be." }
+  ]
+}

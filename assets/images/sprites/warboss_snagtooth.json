@@ -1,0 +1,96 @@
+{
+  "image": "warboss_snagtooth.png",
+  "frameWidth": 336,
+  "frameHeight": 336,
+  "columns": 12,
+  "pixelRatio": 1.5,
+  "anchor": [
+    168.0,
+    294.0
+  ],
+  "visualHeight": 121.0,
+  "facings": [
+    "front",
+    "back"
+  ],
+  "animations": {
+    "idle": {
+      "fps": 6.0,
+      "loop": true,
+      "front": [
+        0,
+        6
+      ],
+      "back": [
+        6,
+        6
+      ]
+    },
+    "walk": {
+      "fps": 12.0,
+      "loop": true,
+      "front": [
+        12,
+        8
+      ],
+      "back": [
+        20,
+        8
+      ]
+    },
+    "attack": {
+      "fps": 11.0,
+      "loop": false,
+      "events": {
+        "hit": 3
+      },
+      "front": [
+        28,
+        6
+      ],
+      "back": [
+        34,
+        6
+      ]
+    },
+    "slam": {
+      "fps": 11.0,
+      "loop": false,
+      "events": {
+        "hit": 4
+      },
+      "front": [
+        40,
+        8
+      ],
+      "back": [
+        48,
+        8
+      ]
+    },
+    "hit": {
+      "fps": 12.0,
+      "loop": false,
+      "front": [
+        56,
+        3
+      ],
+      "back": [
+        59,
+        3
+      ]
+    },
+    "death": {
+      "fps": 10.0,
+      "loop": false,
+      "front": [
+        62,
+        7
+      ],
+      "back": [
+        69,
+        7
+      ]
+    }
+  }
+}

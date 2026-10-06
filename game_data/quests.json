@@ -1,0 +1,112 @@
+{
+  "$schema_doc": "docs/systems/quests.md",
+  "quests": [
+    {
+      "id": "goblins_in_my_woods",
+      "name": "Goblins? In MY Woods?",
+      "giver": "captain_bramble",
+      "summary": "Captain Bramble would like fewer goblins. Any fewer.",
+      "objectives": [{ "type": "kill", "tag": "goblin", "count": 6, "text": "Bonk goblins" }],
+      "rewards": { "xp": 300, "gold": 40, "items": [{ "base": "hunting_bow", "rarity": "rare" }] },
+      "dialog": {
+        "offer": "Goblins have been wandering out of Goblinwood again. Bonk six of them, would you? For the paperwork I need exactly six. Seven is a whole different form.",
+        "accept": "Six goblins. Got it.",
+        "progress": "Still counting goblins? Lovely. Keep at it. Count out loud if it helps.",
+        "complete": "Six goblins! The paperwork sings! Here, this bow was gathering dust. And spiders. Mostly spiders."
+      }
+    },
+    {
+      "id": "rock_and_stone",
+      "name": "Rock and Stone (Mostly Rock)",
+      "giver": "hilda_hammerbottom",
+      "summary": "Hilda needs copper ore. She did not say please. She never says please.",
+      "objectives": [{ "type": "collect", "item": "copper_ore", "count": 4, "text": "Mine copper ore", "consume": true }],
+      "rewards": { "xp": 250, "gold": 30, "unique": "hildas_spare_gloves" },
+      "dialog": {
+        "offer": "You've got the look of someone who hits things. Go hit some copper veins. Four ore. The shiny rocks in the meadow, not the boring ones.",
+        "accept": "Rock and stone!",
+        "progress": "No copper? The rocks won't mine themselves. I've asked. Politely, even.",
+        "complete": "Now THAT is ore! Take my spare gloves. Don't ask what happened to my good ones. Or my eyebrows."
+      }
+    },
+    {
+      "id": "sniff_responsibly",
+      "name": "Sniff Responsibly",
+      "giver": "granny_gristle",
+      "summary": "Granny Gristle needs Sniffleleaf for her potions. They glow. Do not lick them.",
+      "objectives": [{ "type": "collect", "item": "sniffleleaf", "count": 5, "text": "Gather Sniffleleaf", "consume": true }],
+      "rewards": { "xp": 250, "gold": 25, "potionCharges": 1 },
+      "dialog": {
+        "offer": "My nose isn't what it used to be, dearie. Fetch me five sprigs of Sniffleleaf. They glow a bit. Don't lick them. Again.",
+        "accept": "No licking. Understood.",
+        "progress": "Five sprigs, dearie. Follow your nose. Well, follow mine, it's pointing at the meadow.",
+        "complete": "Achoo! Perfect. I've stitched you a bigger potion belt. One more swig of Questionable Health Potion, on the house."
+      }
+    },
+    {
+      "id": "wagon_wheel_wipeout",
+      "name": "Wagon Wheel Wipeout",
+      "giver": "pip_puddlefoot",
+      "summary": "Goblins keep coming back for the rest of Pip's wagon. Defend it.",
+      "objectives": [{ "type": "event", "event": "wagon_wheel_wipeout", "count": 1, "text": "Defend Pip's wagon" }],
+      "rewards": { "xp": 450, "gold": 60, "items": [{ "rarity": "rare" }] },
+      "dialog": {
+        "offer": "They're coming back for the rest of my wagon! Help me hold them off! I'll... supervise. From behind this barrel.",
+        "accept": "Defend the wagon!",
+        "progress": "They're still coming! Do the shooty thing!",
+        "complete": "You saved it! Most of it! Take this, I insist. I've decided it's yours now. No take-backs."
+      }
+    },
+    {
+      "id": "camp_crasher",
+      "name": "Camp Crasher",
+      "giver": "captain_bramble",
+      "requires": ["goblins_in_my_woods"],
+      "summary": "The goblins answer to Warboss Snagtooth. Crash his camp north of the crossroads.",
+      "objectives": [
+        { "type": "discover", "target": "snagtooth_camp", "count": 1, "text": "Find Snagtooth's Camp" },
+        { "type": "kill", "enemy": "warboss_snagtooth", "count": 1, "text": "Defeat Warboss Snagtooth" }
+      ],
+      "rewards": { "xp": 900, "gold": 120 },
+      "dialog": {
+        "offer": "All these goblins answer to one Warboss Snagtooth. He wears a hat with horns. On purpose. Head north from the crossroads and crash his camp.",
+        "accept": "Hat with horns. On purpose. Got it.",
+        "progress": "Snagtooth's camp is north of Wagon Crossroads. Follow the smell of soup.",
+        "complete": "You toppled Snagtooth? Ha! The hat was clearly compensating. Now... about the bad news."
+      }
+    },
+    {
+      "id": "nothing_suspicious",
+      "name": "Nothing Suspicious Here",
+      "giver": "granny_gristle",
+      "requires": ["sniff_responsibly"],
+      "summary": "Granny insists there is nothing suspicious about the hollow east of the goblin camp.",
+      "objectives": [
+        { "type": "discover", "target": "suspicious_hollow", "count": 1, "text": "Find the Suspicious Hollow" },
+        { "type": "open", "target": "hollow_chest", "count": 1, "text": "Open the totally normal chest" }
+      ],
+      "rewards": { "xp": 400, "gold": 50, "shinyBits": 3 },
+      "dialog": {
+        "offer": "There's a little hollow east of the goblin camp, dearie. Nothing suspicious there. Nothing at ALL. There's definitely not a chest. Go not-look at it.",
+        "accept": "I will not-look very carefully.",
+        "progress": "East of the goblin camp. Squeeze through the trees. Mind the mushrooms, they gossip.",
+        "complete": "Oh, you found the chest? Fancy that. What a total, complete, utter surprise."
+      }
+    },
+    {
+      "id": "absolutely_unbearable",
+      "name": "Absolutely Unbearable",
+      "giver": "captain_bramble",
+      "requires": ["camp_crasher"],
+      "summary": "The goblins were worshipping something large. Something with honey on its breath. Defeat Grizzlefang.",
+      "objectives": [{ "type": "kill", "enemy": "grizzlefang", "count": 1, "text": "Defeat Grizzlefang" }],
+      "rewards": { "xp": 2000, "gold": 300, "shinyBits": 10 },
+      "dialog": {
+        "offer": "The goblins weren't the real problem. They were worshipping something. Something large. Grizzlefang lives in the hollow past the Old Plank Bridge. Please don't die; the paperwork for THAT is enormous.",
+        "accept": "This seems bad. I'm in.",
+        "progress": "Grizzlefang's Hollow is west over the bridge, then north. Watch his charges. He can't turn worth a darn, and he HATES rocks.",
+        "complete": "You beat Grizzlefang?! I'm writing a song about it. It's mostly screaming, but it's a song. Goblinwood owes you, hero."
+      }
+    }
+  ]
+}

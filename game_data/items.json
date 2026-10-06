@@ -1,0 +1,163 @@
+{
+  "$schema_doc": "docs/systems/loot.md",
+  "rarities": [
+    { "id": "common", "name": "Common", "color": "#e8e6df", "affixes": 0, "weight": 52, "valueMult": 1, "salvage": 0, "statMult": 1.0 },
+    { "id": "uncommon", "name": "Uncommon", "color": "#6fdc5a", "affixes": 1, "weight": 30, "valueMult": 2, "salvage": 1, "statMult": 1.08 },
+    { "id": "rare", "name": "Rare", "color": "#4fa3ff", "affixes": 2, "weight": 13.5, "valueMult": 4, "salvage": 2, "statMult": 1.16 },
+    { "id": "epic", "name": "Epic", "color": "#b26bff", "affixes": 3, "weight": 3.6, "valueMult": 8, "salvage": 4, "statMult": 1.26 },
+    { "id": "legendary", "name": "Legendary", "color": "#ff9a2b", "affixes": 3, "weight": 0.9, "valueMult": 20, "salvage": 10, "statMult": 1.38 }
+  ],
+  "slots": [
+    { "id": "weapon", "name": "Weapon", "icon": "item_bow" },
+    { "id": "head", "name": "Head", "icon": "item_helm" },
+    { "id": "chest", "name": "Chest", "icon": "item_chest" },
+    { "id": "hands", "name": "Hands", "icon": "item_gloves" },
+    { "id": "feet", "name": "Feet", "icon": "item_boots" },
+    { "id": "trinket", "name": "Trinket", "icon": "item_trinket" }
+  ],
+  "stats": [
+    { "id": "maxHp", "name": "Max Health", "format": "flat" },
+    { "id": "attack", "name": "Attack", "format": "flat" },
+    { "id": "armor", "name": "Armor", "format": "flat" },
+    { "id": "hpRegen", "name": "Health Regen", "format": "flat_per_second" },
+    { "id": "critChance", "name": "Crit Chance", "format": "percent" },
+    { "id": "critDamage", "name": "Crit Damage", "format": "percent" },
+    { "id": "attackSpeed", "name": "Attack Speed", "format": "percent" },
+    { "id": "moveSpeed", "name": "Move Speed", "format": "percent" },
+    { "id": "cooldownReduction", "name": "Cooldown Reduction", "format": "percent" },
+    { "id": "damageBonus", "name": "Damage", "format": "percent" },
+    { "id": "goldFind", "name": "Gold Find", "format": "percent" },
+    { "id": "ultimateCharge", "name": "Ultimate Charge", "format": "percent" }
+  ],
+  "affixes": [
+    { "id": "hearty", "stat": "maxHp", "range": [8, 14], "perLevel": 3, "prefix": "Hearty", "suffix": "of Vitality", "slots": ["head", "chest", "hands", "feet", "trinket"] },
+    { "id": "sharp", "stat": "attack", "range": [2, 4], "perLevel": 0.8, "prefix": "Sharp", "suffix": "of Pointiness", "slots": ["weapon", "hands", "trinket"] },
+    { "id": "sturdy", "stat": "armor", "range": [3, 6], "perLevel": 1.2, "prefix": "Sturdy", "suffix": "of the Turtle", "slots": ["head", "chest", "hands", "feet"] },
+    { "id": "keen", "stat": "critChance", "range": [0.015, 0.03], "perLevel": 0.0015, "prefix": "Keen", "suffix": "of Bullseyes", "slots": ["weapon", "head", "hands", "trinket"] },
+    { "id": "ouch", "stat": "critDamage", "range": [0.08, 0.15], "perLevel": 0.006, "prefix": "Brutal", "suffix": "of Ouch", "slots": ["weapon", "hands", "trinket"] },
+    { "id": "swift", "stat": "attackSpeed", "range": [0.04, 0.08], "perLevel": 0.002, "prefix": "Swift", "suffix": "of Twitchiness", "slots": ["weapon", "hands", "trinket"] },
+    { "id": "zoomies", "stat": "moveSpeed", "range": [0.03, 0.06], "perLevel": 0.001, "prefix": "Zippy", "suffix": "of Zoomies", "slots": ["feet"] },
+    { "id": "haste", "stat": "cooldownReduction", "range": [0.03, 0.06], "perLevel": 0.001, "prefix": "Hasty", "suffix": "of Impatience", "slots": ["head", "trinket", "weapon"] },
+    { "id": "snacking", "stat": "hpRegen", "range": [1, 2], "perLevel": 0.3, "prefix": "Snacky", "suffix": "of Snacking", "slots": ["chest", "head", "trinket"] },
+    { "id": "greed", "stat": "goldFind", "range": [0.1, 0.25], "perLevel": 0.01, "prefix": "Greedy", "suffix": "of Greed", "slots": ["hands", "trinket", "feet"] },
+    { "id": "hype", "stat": "ultimateCharge", "range": [0.1, 0.2], "perLevel": 0.005, "prefix": "Hyped", "suffix": "of Building Hype", "slots": ["weapon", "chest", "trinket"] },
+    { "id": "mighty", "stat": "damageBonus", "range": [0.04, 0.08], "perLevel": 0.003, "prefix": "Mighty", "suffix": "of Extra Bonk", "slots": ["weapon", "chest", "trinket"] }
+  ],
+  "bases": [
+    { "id": "short_bow", "name": "Short Bow", "slot": "weapon", "classes": ["ranger"], "icon": "item_bow", "levels": [1, 5], "implicit": { "stat": "attack", "range": [6, 9], "perLevel": 2.0 } },
+    { "id": "hunting_bow", "name": "Hunting Bow", "slot": "weapon", "classes": ["ranger"], "icon": "item_bow", "levels": [3, 60], "implicit": { "stat": "attack", "range": [9, 13], "perLevel": 2.4 } },
+    { "id": "leather_hood", "name": "Leather Hood", "slot": "head", "icon": "item_helm", "levels": [1, 60], "implicit": { "stat": "armor", "range": [4, 6], "perLevel": 1.2 } },
+    { "id": "leaf_tunic", "name": "Leaf Tunic", "slot": "chest", "icon": "item_chest", "levels": [1, 60], "implicit": { "stat": "armor", "range": [8, 12], "perLevel": 2.0 } },
+    { "id": "archer_gloves", "name": "Archer Gloves", "slot": "hands", "icon": "item_gloves", "levels": [1, 60], "implicit": { "stat": "armor", "range": [2, 4], "perLevel": 0.8 } },
+    { "id": "trail_boots", "name": "Trail Boots", "slot": "feet", "icon": "item_boots", "levels": [1, 60], "implicit": { "stat": "armor", "range": [3, 5], "perLevel": 1.0 } },
+    { "id": "copper_ring", "name": "Copper Ring", "slot": "trinket", "icon": "item_trinket", "levels": [1, 60], "implicit": { "stat": "critChance", "range": [0.02, 0.03], "perLevel": 0.001 } },
+    { "id": "lucky_acorn", "name": "Lucky Acorn", "slot": "trinket", "icon": "item_trinket", "levels": [2, 60], "implicit": { "stat": "maxHp", "range": [10, 16], "perLevel": 3 } }
+  ],
+  "epicNames": {
+    "adjectives": ["Goblin-Bane", "Suspiciously Good", "Moss-Kissed", "Heroic-ish", "Thrice-Blessed", "Buckleburg's Finest", "Unreasonably Shiny"],
+    "nouns": ["the Unbothered", "Pointy Ends", "the Underdog", "Second Breakfast", "Mild Peril", "the Last Arrow"]
+  },
+  "legendaries": [
+    {
+      "id": "stormwood_bow",
+      "name": "Stormwood Bow",
+      "base": "hunting_bow",
+      "icon": "item_bow_legendary",
+      "level": 6,
+      "fixed": { "attack": 42, "critChance": 0.08 },
+      "power": {
+        "id": "stormcaller",
+        "name": "Stormcaller",
+        "ability": "ranger_precision_shot",
+        "description": "Precision Shot chains lightning to 2 nearby enemies after the first hit.",
+        "params": { "chains": 2, "damage": 0.6, "range": 4.5 }
+      },
+      "flavor": "Carved from a tree that was struck by lightning. Twice. It took it personally."
+    },
+    {
+      "id": "gnawed_quiver_charm",
+      "name": "Gnawed Goblin Quiver",
+      "base": "copper_ring",
+      "icon": "item_trinket",
+      "level": 3,
+      "fixed": { "attackSpeed": 0.08, "maxHp": 30 },
+      "power": {
+        "id": "chewed_volley",
+        "name": "Chewed Volley",
+        "ability": "ranger_multi_shot",
+        "description": "Multi-Shot fires 3 extra arrows. They're slightly chewed. Still pointy.",
+        "params": { "extra": 3, "spreadBonus": 18 }
+      },
+      "flavor": "A goblin used this as a lunchbox. We don't ask questions."
+    },
+    {
+      "id": "boots_of_unnecessary_flair",
+      "name": "Boots of Unnecessary Flair",
+      "base": "trail_boots",
+      "icon": "item_boots",
+      "level": 4,
+      "fixed": { "armor": 18, "moveSpeed": 0.08 },
+      "power": {
+        "id": "flair_trap",
+        "name": "Exit, Stage Left",
+        "ability": "ranger_backflip",
+        "description": "Backflip leaves a Vine Trap where you started (once every 4 seconds).",
+        "params": { "cooldown": 4, "radius": 1.4, "root": 1.6 }
+      },
+      "flavor": "Every backflip deserves a round of applause. The vines provide it, sort of."
+    },
+    {
+      "id": "snagtooth_iron_hood",
+      "name": "Snagtooth's Iron Hood",
+      "base": "leather_hood",
+      "icon": "item_helm",
+      "level": 6,
+      "fixed": { "armor": 26, "maxHp": 45 },
+      "power": {
+        "id": "hard_headed",
+        "name": "Hard Headed",
+        "description": "Below 35% health you take 30% less damage. Snagtooth never learned anything, but his hat did.",
+        "params": { "threshold": 0.35, "reduction": 0.3 }
+      },
+      "flavor": "It still smells like soup."
+    },
+    {
+      "id": "grizzlefang_fang_necklace",
+      "name": "Grizzlefang's Fang Necklace",
+      "base": "lucky_acorn",
+      "icon": "item_fang_necklace",
+      "level": 8,
+      "fixed": { "maxHp": 60, "ultimateCharge": 0.3, "damageBonus": 0.1 },
+      "power": {
+        "id": "bear_necessities",
+        "name": "The Bear Necessities",
+        "ability": "ranger_arrow_storm",
+        "description": "Arrow Storm is 40% larger and slows enemies by 60% instead of 30%.",
+        "params": { "radiusBonus": 0.4, "slow": 0.6 }
+      },
+      "flavor": "He had plenty of teeth. He can spare one. Probably."
+    },
+    {
+      "id": "hildas_spare_gloves",
+      "name": "Hilda's Spare Gloves",
+      "base": "archer_gloves",
+      "icon": "item_gloves",
+      "level": 2,
+      "fixed": { "armor": 9, "attack": 6, "attackSpeed": 0.06 },
+      "power": {
+        "id": "double_tap",
+        "name": "Double Tap",
+        "ability": "ranger_quick_shot",
+        "description": "Quick Shot has a 25% chance to fire a second arrow.",
+        "params": { "chance": 0.25 }
+      },
+      "flavor": "Slightly singed. Hilda insists that's a feature."
+    }
+  ],
+  "materials": [
+    { "id": "copper_ore", "name": "Copper Ore", "icon": "mat_copper_ore", "value": 6, "description": "Shiny, heavy, and absolutely not edible. Hilda wants it." },
+    { "id": "sniffleleaf", "name": "Sniffleleaf", "icon": "mat_sniffleleaf", "value": 5, "description": "Smells like peppermint and regret. Granny brews it into potions." },
+    { "id": "goblin_tooth", "name": "Goblin Tooth", "icon": "mat_goblin_tooth", "value": 3, "description": "Goblins lose teeth constantly. Mostly to other goblins." },
+    { "id": "grizzly_honey", "name": "Grizzly Honey", "icon": "mat_honey", "value": 25, "description": "Extremely sticky. Extremely bear-adjacent." }
+  ]
+}

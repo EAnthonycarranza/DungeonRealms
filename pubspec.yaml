@@ -1,0 +1,50 @@
+name: dungeon_realms
+description: "Dungeon Realms - a colorful 2.5D isometric action RPG built with Flutter + Flame."
+publish_to: 'none'
+version: 0.3.0+1
+
+environment:
+  sdk: ^3.13.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.38.2
+  flame_tiled: ^3.1.2
+  shared_preferences: ^2.5.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flame_test: ^2.3.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    # JSON content definitions (see docs/systems/content.md).
+    - game_data/
+    # Tiled maps, tilesets and the prop image collection.
+    - assets/tiles/
+    - assets/tiles/props/
+    # Concept art sheets (5 expressions per hero) used for portraits.
+    - assets/images/heroes/
+    # Character sprite sheets + their animation metadata.
+    - assets/images/sprites/
+    # UI icons for abilities and items.
+    - assets/images/icons/
+
+  fonts:
+    - family: LilitaOne
+      fonts:
+        - asset: assets/fonts/LilitaOne-Regular.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+        - asset: assets/fonts/Nunito-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Nunito-Black.ttf
+          weight: 900

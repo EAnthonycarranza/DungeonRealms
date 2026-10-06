@@ -1,0 +1,33 @@
+{
+  "image": "npc_hilda.png",
+  "frameWidth": 240,
+  "frameHeight": 240,
+  "columns": 12,
+  "pixelRatio": 1.5,
+  "anchor": [
+    120.0,
+    204.0
+  ],
+  "visualHeight": 76.0,
+  "facings": [
+    "front"
+  ],
+  "animations": {
+    "idle": {
+      "fps": 5.0,
+      "loop": true,
+      "front": [
+        0,
+        6
+      ]
+    },
+    "talk": {
+      "fps": 8.0,
+      "loop": true,
+      "front": [
+        6,
+        6
+      ]
+    }
+  }
+}

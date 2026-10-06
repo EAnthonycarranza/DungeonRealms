@@ -1,0 +1,125 @@
+{
+  "$schema_doc": "docs/systems/content.md#enemies",
+  "scaling": {
+    "hpPerLevel": 0.32,
+    "attackPerLevel": 0.22,
+    "armorPerLevel": 3,
+    "xpPerLevel": 0.25
+  },
+  "enemies": [
+    {
+      "id": "goblin_grunt",
+      "name": "Goblin Grunt",
+      "tags": ["goblin"],
+      "rank": "normal",
+      "sprite": "goblin_grunt",
+      "stats": { "hp": 42, "attack": 7, "armor": 6, "speed": 3.2, "radius": 0.34 },
+      "xp": 14,
+      "ai": "melee",
+      "aggroRange": 7.5,
+      "leashRange": 16,
+      "abilities": ["goblin_club_smack"],
+      "loot": "goblin_common",
+      "barks": ["Shiny! Gimme!", "For the Warboss!", "I bonk you now.", "Is that a hero? Ew."]
+    },
+    {
+      "id": "goblin_slinger",
+      "name": "Goblin Slinger",
+      "tags": ["goblin"],
+      "rank": "normal",
+      "sprite": "goblin_slinger",
+      "stats": { "hp": 30, "attack": 6, "armor": 3, "speed": 3.0, "radius": 0.32 },
+      "xp": 14,
+      "ai": "ranged",
+      "aggroRange": 8.5,
+      "leashRange": 16,
+      "preferredRange": 5.5,
+      "abilities": ["goblin_rock_toss"],
+      "loot": "goblin_common",
+      "barks": ["Rock incoming!", "I got a rock!", "Hold still, tall thing!"]
+    },
+    {
+      "id": "goblin_shaman",
+      "name": "Goblin Shaman",
+      "tags": ["goblin", "caster"],
+      "rank": "normal",
+      "sprite": "goblin_shaman",
+      "stats": { "hp": 36, "attack": 7, "armor": 4, "speed": 2.8, "radius": 0.34 },
+      "xp": 18,
+      "ai": "caster",
+      "aggroRange": 8.5,
+      "leashRange": 16,
+      "preferredRange": 6,
+      "abilities": ["shaman_mend", "shaman_mushroom_hex", "shaman_hex_bolt"],
+      "loot": "goblin_shaman",
+      "barks": ["Mushroom magic!", "The spirits say... ow.", "Hexy time!"]
+    },
+    {
+      "id": "honey_crazed_goblin",
+      "name": "Honey-Crazed Goblin",
+      "tags": ["goblin"],
+      "rank": "normal",
+      "sprite": "goblin_grunt",
+      "tint": "#ffcf5a",
+      "stats": { "hp": 34, "attack": 7, "armor": 4, "speed": 3.8, "radius": 0.34 },
+      "xp": 10,
+      "ai": "melee",
+      "aggroRange": 20,
+      "leashRange": 30,
+      "abilities": ["goblin_club_smack"],
+      "loot": "goblin_minion",
+      "barks": ["STICKY!", "Big bear says BONK!", "So... much... honey..."]
+    },
+    {
+      "id": "warboss_snagtooth",
+      "name": "Warboss Snagtooth",
+      "title": "Chief of the Camp (Self-Appointed)",
+      "tags": ["goblin", "elite"],
+      "rank": "elite",
+      "sprite": "warboss_snagtooth",
+      "stats": { "hp": 300, "attack": 9, "armor": 14, "speed": 2.9, "radius": 0.6 },
+      "xp": 220,
+      "ai": "phased",
+      "aggroRange": 8,
+      "leashRange": 18,
+      "phases": [
+        { "from": 1.0, "abilities": ["snagtooth_cleave", "snagtooth_slam"] },
+        { "from": 0.5, "onEnter": "snagtooth_rally", "abilities": ["snagtooth_cleave", "snagtooth_slam"] }
+      ],
+      "loot": "elite_snagtooth",
+      "barks": ["Who dares?! Oh. A tiny archer.", "My camp! MY SOUP!", "I'm the boss! It says so on my hat!"],
+      "deathBark": "Tell the bear... I tried..."
+    },
+    {
+      "id": "grizzlefang",
+      "name": "Grizzlefang",
+      "title": "The Unbearable",
+      "tags": ["beast", "boss"],
+      "rank": "boss",
+      "sprite": "grizzlefang",
+      "stats": { "hp": 900, "attack": 8, "armor": 22, "speed": 3.1, "radius": 1.05 },
+      "xp": 900,
+      "ai": "phased",
+      "aggroRange": 9,
+      "leashRange": 30,
+      "phases": [
+        { "from": 1.0, "abilities": ["grizzlefang_maul", "grizzlefang_charge"] },
+        { "from": 0.6, "onEnter": "grizzlefang_roar", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] },
+        { "from": 0.3, "onEnter": "grizzlefang_honey_rage", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] }
+      ],
+      "loot": "boss_grizzlefang",
+      "barks": ["*sniff sniff* ...archer. Crunchy.", "GRRRAAAH!", "*aggressive honey noises*"],
+      "deathBark": "*sad bear noises*"
+    }
+  ],
+  "packs": [
+    { "id": "goblin_scouts", "members": [{ "enemy": "goblin_grunt", "count": 2 }] },
+    { "id": "goblin_raiders", "members": [{ "enemy": "goblin_grunt", "count": 1 }, { "enemy": "goblin_slinger", "count": 2 }] },
+    { "id": "goblin_patrol", "members": [{ "enemy": "goblin_grunt", "count": 2 }, { "enemy": "goblin_slinger", "count": 1 }] },
+    { "id": "goblin_ritual", "members": [{ "enemy": "goblin_shaman", "count": 1 }, { "enemy": "goblin_grunt", "count": 2 }] },
+    { "id": "goblin_camp_guard", "members": [{ "enemy": "goblin_grunt", "count": 2 }, { "enemy": "goblin_slinger", "count": 1 }, { "enemy": "goblin_shaman", "count": 1 }] },
+    { "id": "goblin_hoarders", "members": [{ "enemy": "goblin_grunt", "count": 2 }, { "enemy": "goblin_slinger", "count": 1 }] },
+    { "id": "warboss_snagtooth", "members": [{ "enemy": "warboss_snagtooth", "count": 1 }, { "enemy": "goblin_grunt", "count": 2 }] },
+    { "id": "honey_crazed_goblins", "members": [{ "enemy": "honey_crazed_goblin", "count": 3 }] }
+  ]
+}
