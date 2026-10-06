@@ -103,7 +103,7 @@ class HeroEntity extends Actor {
     final before = ultimate;
     ultimate = math.min(ultimateMax, ultimate + amount * (1 + stats.ultimateCharge));
     if (before < ultimateMax && ultimate >= ultimateMax && unlocked(AbilitySlotId.ultimate)) {
-      game.session.toast('Ultimate ready!', icon: 'ability_arrow_storm', color: 0xffffc94f);
+      game.session.toast('Ultimate ready!', icon: abilityFor(AbilitySlotId.ultimate)?.icon, color: 0xffffc94f);
     }
   }
 
@@ -230,7 +230,7 @@ class HeroEntity extends Actor {
     if (started) {
       if (r.slot == AbilitySlotId.ultimate) {
         _ultimateMood = 2.2;
-        game.session.showBanner('ARROW STORM!', style: 'ultimate');
+        game.session.showBanner('${a.name.toUpperCase()}!', style: 'ultimate');
       } else if (r.slot != AbilitySlotId.dodge) {
         _attackMood = 0.7;
       }
@@ -280,7 +280,8 @@ class HeroEntity extends Actor {
   void drinkPotion() {
     if (dead) return;
     if (profile.potionCharges <= 0) {
-      game.session.toast('Out of potions! Visit Granny Gristle or a waypoint.');
+      final healer = game.data.npcs.values.where((n) => n.services.contains('refill_potions')).firstOrNull;
+      game.session.toast('Out of potions! Visit ${healer?.name ?? 'a healer'} or a waypoint.');
       return;
     }
     if (potionCooldown > 0) return;

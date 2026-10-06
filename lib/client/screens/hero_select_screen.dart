@@ -123,7 +123,7 @@ class _HeroSelectScreenState extends State<HeroSelectScreen> {
                 ],
                 if (hero.playable && !short) ...[
                   const SizedBox(height: 22),
-                  GoldButton(label: 'Begin in Goblinwood', icon: Icons.play_arrow_rounded, onPressed: start),
+                  GoldButton(label: 'Begin in ${widget.data.regions.firstWhere((r) => r.playable).name}', icon: Icons.play_arrow_rounded, onPressed: start),
                 ] else if (!hero.playable) ...[
                   const SizedBox(height: 18),
                   Container(

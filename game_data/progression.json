@@ -1,14 +1,14 @@
 {
   "$schema_doc": "docs/systems/progression.md",
   "levelCap": 60,
+  "startingGold": 15,
   "xpCurve": { "base": 80, "exponent": 1.6 },
   "ultimate": { "max": 100, "onHurt": 2 },
   "combat": {
     "armorBase": 60,
     "armorPerAttackerLevel": 12,
     "regenOutOfCombatDelay": 4,
-    "regenOutOfCombatPct": 0.04,
-    "critMultiplierBase": 1.0
+    "regenOutOfCombatPct": 0.04
   },
   "difficulties": [
     { "id": "normal", "name": "Normal", "tagline": "Campaign", "hp": 1.0, "damage": 1.0, "xp": 1.0, "gold": 1.0, "rarityBonus": 0, "mechanics": [] },

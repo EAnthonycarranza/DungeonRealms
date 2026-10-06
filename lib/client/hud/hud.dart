@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../content/game_data.dart';
 import '../../game/dungeon_realms_game.dart';
 import '../panels/panel_host.dart';
 import '../theme.dart';
@@ -112,7 +113,10 @@ class Hud extends StatelessWidget {
                     ),
                   ),
                 ),
-              ValueListenableBuilder<bool>(valueListenable: s.loading, builder: (_, loading, _) => loading ? const _LoadingOverlay() : const SizedBox.shrink()),
+              ValueListenableBuilder<bool>(
+                valueListenable: s.loading,
+                builder: (_, loading, _) => loading ? _LoadingOverlay(region: game.data.region(game.profile.region)) : const SizedBox.shrink(),
+              ),
             ],
           ),
         );
@@ -162,7 +166,9 @@ class _MenuButtons extends StatelessWidget {
 }
 
 class _LoadingOverlay extends StatelessWidget {
-  const _LoadingOverlay();
+  const _LoadingOverlay({required this.region});
+
+  final RegionDef region;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -171,14 +177,15 @@ class _LoadingOverlay extends StatelessWidget {
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('ENTERING GOBLINWOOD', style: DR.title(30, color: DR.gold)),
+        Text('ENTERING ${region.name.toUpperCase()}', style: DR.title(30, color: DR.gold)),
         const SizedBox(height: 16),
         const SizedBox(
           width: 220,
           child: LinearProgressIndicator(color: DR.gold, backgroundColor: DR.panel),
         ),
         const SizedBox(height: 14),
-        Text('Tip: goblins are allergic to arrows.', style: DR.body(14, color: DR.muted)),
+        if (region.loadingTips.isNotEmpty)
+          Text('Tip: ${region.loadingTips[DateTime.now().second % region.loadingTips.length]}', style: DR.body(14, color: DR.muted)),
       ],
     ),
   );

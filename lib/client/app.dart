@@ -88,7 +88,10 @@ class _BootState extends State<_Boot> {
         _data = data;
         _heroes = heroes;
       });
-      if (widget.quickstart) _startNew('ranger', 'leafwarden', dev: widget.devStart);
+      if (widget.quickstart) {
+        final hero = data.heroes.values.firstWhere((h) => h.playable);
+        _startNew(hero.id, hero.looks.first.id, dev: widget.devStart);
+      }
     } catch (e, s) {
       debugPrint('Failed to load game data: $e\n$s');
       setState(() => _error = e);
@@ -117,7 +120,7 @@ class _BootState extends State<_Boot> {
     if (_error != null) {
       return Scaffold(
         body: Center(
-          child: Text('Something went wrong loading Goblinwood:\n$_error', textAlign: TextAlign.center, style: DR.body(16)),
+          child: Text('Something went wrong loading the realm:\n$_error', textAlign: TextAlign.center, style: DR.body(16)),
         ),
       );
     }

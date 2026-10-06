@@ -21,20 +21,23 @@ class RegionDef {
       map = j.strOr('map'),
       playable = j.boolOr('playable', false),
       description = j.str('description'),
-      ambient = j.strOr('ambient'),
       waypoints = [for (final w in j.objects('waypoints')) WaypointDef.fromJson(w)],
       startWaypoint = j.strOr('startWaypoint'),
-      townWaypoint = j.strOr('townWaypoint');
+      loadingTips = j.strings('loadingTips'),
+      deathQuips = j.strings('deathQuips');
 
   final String id, name;
   final (double, double) levels;
   final String? map;
   final bool playable;
   final String description;
-  final String? ambient;
   final List<WaypointDef> waypoints;
+
+  /// Where new heroes start (and the waypoint they know from the outset).
   final String? startWaypoint;
-  final String? townWaypoint;
+
+  /// Flavor for the loading screen and the death screen.
+  final List<String> loadingTips, deathQuips;
 
   String get levelLabel => 'LEVEL ${levels.$1.toInt()}–${levels.$2.toInt()}';
 }
@@ -110,6 +113,9 @@ class EventDef {
       cooldown = j.dbl('cooldown'),
       loot = j.strOr('loot'),
       xp = j.intOr('xp', 0),
+      npc = j.strOr('npc'),
+      startPrompt = j.strOr('startPrompt'),
+      runningText = j.strOr('runningText'),
       startBark = j.strOr('startBark'),
       successBark = j.strOr('successBark'),
       failBark = j.strOr('failBark');
@@ -122,6 +128,13 @@ class EventDef {
   final double spawnRadius, cooldown;
   final String? loot;
   final int xp;
+
+  /// The NPC who shouts the start / success / fail barks.
+  final String? npc;
+
+  /// Dialog button that (re)starts the event, and what the quest giver says
+  /// while it runs.
+  final String? startPrompt, runningText;
   final String? startBark, successBark, failBark;
 }
 
@@ -178,6 +191,7 @@ class MechanicDef {
 class ProgressionDef {
   ProgressionDef.fromJson(JsonReader j)
     : levelCap = j.integer('levelCap'),
+      startingGold = j.intOr('startingGold', 0),
       xpBase = j.obj('xpCurve').dbl('base'),
       xpExponent = j.obj('xpCurve').dbl('exponent'),
       ultimateMax = j.obj('ultimate').dbl('max'),
@@ -190,6 +204,7 @@ class ProgressionDef {
       mechanics = [for (final m in j.objects('mechanics')) MechanicDef.fromJson(m)];
 
   final int levelCap;
+  final int startingGold;
   final double xpBase, xpExponent;
   final double ultimateMax, ultimateOnHurt;
   final double armorBase, armorPerAttackerLevel;

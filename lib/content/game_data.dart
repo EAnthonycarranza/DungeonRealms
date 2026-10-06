@@ -337,9 +337,13 @@ class GameData {
         need(packs.containsKey(w.pack), 'event ${e.id}: unknown pack ${w.pack}');
       }
       if (e.loot != null) need(lootTables.containsKey(e.loot), 'event ${e.id}: unknown loot ${e.loot}');
+      if (e.npc != null) need(npcs.containsKey(e.npc), 'event ${e.id}: unknown npc ${e.npc}');
     }
     for (final r in regions) {
-      if (r.playable) need(r.map != null, 'region ${r.id}: playable region needs a map');
+      if (r.playable) {
+        need(r.map != null, 'region ${r.id}: playable region needs a map');
+        need(r.waypoints.any((w) => w.id == r.startWaypoint), 'region ${r.id}: playable region needs a startWaypoint from its waypoints');
+      }
     }
     final mechanicIds = progression.mechanics.map((m) => m.id).toSet();
     for (final d in progression.difficulties) {

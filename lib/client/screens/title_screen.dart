@@ -17,6 +17,7 @@ class TitleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final startRegion = data.regions.firstWhere((r) => r.playable);
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, c) {
@@ -146,7 +147,7 @@ class TitleScreen extends StatelessWidget {
                                 onPressed: () => onContinue(heroes.first),
                               ),
                             heroes.isEmpty
-                                ? GoldButton(label: 'Enter Goblinwood', icon: Icons.play_arrow_rounded, onPressed: onNewHero)
+                                ? GoldButton(label: 'Enter ${startRegion.name}', icon: Icons.play_arrow_rounded, onPressed: onNewHero)
                                 : GhostButton(label: 'New Hero', icon: Icons.person_add_alt_1_rounded, onPressed: onNewHero),
                           ],
                         ),
@@ -161,7 +162,7 @@ class TitleScreen extends StatelessWidget {
                         ],
                         SizedBox(height: short ? 12 : 28),
                         Text(
-                          'Phase 01–03 vertical slice • Goblinwood (Lv 1–8) • Saves stay on this device',
+                          'Phase 01–03 vertical slice • ${startRegion.name} (Lv ${startRegion.levels.$1.toInt()}–${startRegion.levels.$2.toInt()}) • Saves stay on this device',
                           style: DR.body(12, color: const Color(0xff8f99aa)),
                         ),
                       ],

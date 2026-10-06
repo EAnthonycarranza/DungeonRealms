@@ -121,6 +121,11 @@ class _TouchSkillButtonState extends State<TouchSkillButton> {
 
   InputState get input => widget.game.input;
 
+  String? get _basicIcon {
+    final game = widget.game;
+    return game.data.abilities[game.data.heroes[game.profile.heroClass]!.basicAbility]?.icon;
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = widget.game.session;
@@ -149,7 +154,13 @@ class _TouchSkillButtonState extends State<TouchSkillButton> {
         listenable: Listenable.merge([s.abilities, s.dodge, s.ultimateCharge]),
         builder: (_, _) {
           final hud = _hud(s);
-          return SkillButtonFace(hud: hud, size: widget.size, pressed: _pressed, charge: hud?.isUltimate == true ? s.ultimateCharge.value : null);
+          return SkillButtonFace(
+            hud: hud,
+            size: widget.size,
+            pressed: _pressed,
+            charge: hud?.isUltimate == true ? s.ultimateCharge.value : null,
+            iconOverride: widget.slot == AbilitySlotId.basic ? _basicIcon : null,
+          );
         },
       ),
     );
@@ -215,7 +226,7 @@ class TouchActionCluster extends StatelessWidget {
               onTap: () => game.input.requestPotion(),
               child: ValueListenableBuilder<(int, int, double)>(
                 valueListenable: s.potion,
-                builder: (_, p, _) => _PotionFace(size: small, charges: p.$1, cooldown: p.$3),
+                builder: (_, p, _) => _PotionFace(size: small, icon: game.data.potion.icon, charges: p.$1, cooldown: p.$3),
               ),
             ),
           ),
@@ -226,13 +237,14 @@ class TouchActionCluster extends StatelessWidget {
 }
 
 class _PotionFace extends StatelessWidget {
-  const _PotionFace({required this.size, required this.charges, required this.cooldown});
+  const _PotionFace({required this.size, required this.icon, required this.charges, required this.cooldown});
   final double size;
+  final String icon;
   final int charges;
   final double cooldown;
 
   @override
-  Widget build(BuildContext context) => SkillButtonFace(hud: null, size: size, iconOverride: 'ability_potion', badge: '$charges', pressed: cooldown > 0);
+  Widget build(BuildContext context) => SkillButtonFace(hud: null, size: size, iconOverride: icon, badge: '$charges', pressed: cooldown > 0);
 }
 
 /// Contextual interact button (Talk / Mine / Open / Travel...).

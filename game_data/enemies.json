@@ -104,8 +104,8 @@
       "leashRange": 30,
       "phases": [
         { "from": 1.0, "abilities": ["grizzlefang_maul", "grizzlefang_charge"] },
-        { "from": 0.6, "onEnter": "grizzlefang_roar", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] },
-        { "from": 0.3, "onEnter": "grizzlefang_honey_rage", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] }
+        { "from": 0.6, "onEnter": "grizzlefang_roar", "subtitle": "He called for snacks. The snacks have clubs.", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] },
+        { "from": 0.3, "onEnter": "grizzlefang_honey_rage", "subtitle": "He found the honey. THIS SEEMS BAD.", "abilities": ["grizzlefang_maul", "grizzlefang_charge", "grizzlefang_slam"] }
       ],
       "loot": "boss_grizzlefang",
       "barks": ["*sniff sniff* ...archer. Crunchy.", "GRRRAAAH!", "*aggressive honey noises*"],

@@ -103,9 +103,8 @@ class AbilityDef {
       wallStun = j.dblOr('wallStun', 0),
       distance = j.dblOr('distance', 0),
       invulnerable = j.boolOr('invulnerable', false),
-      direction = j.strOr('direction', 'aim')!,
       amount = j.dblOr('amount', 0),
-      condition = j.strOr('condition'),
+      threshold = j.dblOr('threshold', 0.7),
       pack = j.strOr('pack'),
       bark = j.strOr('bark'),
       buff = j.doubleMap('buff'),
@@ -157,9 +156,10 @@ class AbilityDef {
   final double wallStun;
   final double distance;
   final bool invulnerable;
-  final String direction;
   final double amount;
-  final String? condition;
+
+  /// heal_allies: cast when an ally drops below this health fraction.
+  final double threshold;
   final String? pack;
   final String? bark;
   final Map<String, double> buff;

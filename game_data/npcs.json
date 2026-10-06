@@ -23,7 +23,8 @@
       "color": "#ff8a2b",
       "greeting": "Mind the anvil. It bites.",
       "barks": ["Copper! Bring me copper!", "Rocks are just ore that hasn't met me yet.", "Hmph. Your bow needs more hitting."],
-      "services": ["salvage"]
+      "services": ["salvage"],
+      "shop": { "title": "Hilda's Salvage Bench", "blurb": "Break gear into Shiny Bits. Hilda enjoys this a little too much." }
     },
     {
       "id": "granny_gristle",
@@ -43,7 +44,8 @@
       "color": "#ffc94f",
       "greeting": "Oh thank goodness, a hero! My wagon! My wheels! My dignity!",
       "barks": ["They took my left wheel. Who needs ONE wheel?!", "I'll pay! In coins! And gratitude! Mostly coins!", "Is it safe? It's not safe. Is it safe now?"],
-      "services": ["sell"]
+      "services": ["sell"],
+      "shop": { "title": "Pip's Trading Post", "blurb": "Pip buys anything. Pip has questionable judgment." }
     }
   ]
 }

@@ -37,11 +37,11 @@ class QuestDirector {
           options.add(const DialogOption('close', 'Not now'));
         default:
           text = q.dialog.progress;
-          final event = q.objectives.where((o) => o.type == 'event').firstOrNull?.event;
-          if (event != null && game.events.canStart(event)) {
-            options.add(const DialogOption('start_event', 'Defend the wagon!', primary: true));
+          final event = game.data.events[q.objectives.where((o) => o.type == 'event').firstOrNull?.event];
+          if (event != null && game.events.canStart(event.id)) {
+            options.add(DialogOption('start_event', event.startPrompt ?? 'Start ${event.name}', primary: true));
           } else if (event != null && game.events.running) {
-            text = 'They\'re HERE! Do the shooty thing!';
+            text = event.runningText ?? text;
           }
           options.add(const DialogOption('close', 'On it.'));
       }
@@ -103,7 +103,7 @@ class QuestDirector {
         if (event != null) game.events.start(event);
       case 'refill':
         game.profile.potionCharges = game.profile.potionMax;
-        game.session.toast('Potions refilled. Granny insists you eat something.', icon: 'ability_potion');
+        game.session.toast('Potions refilled. ${_npc?.def.name ?? 'Someone'} insists you eat something.', icon: game.data.potion.icon);
         close();
       case 'salvage':
         close();
@@ -144,7 +144,7 @@ class QuestDirector {
     if (r.potionCharges > 0) {
       game.profile.potionMax = (game.profile.potionMax + r.potionCharges).clamp(1, game.data.potion.maxCharges);
       game.profile.potionCharges = game.profile.potionMax;
-      game.session.toast('Potion belt upgraded! (${game.profile.potionMax} potions)', icon: 'ability_potion', color: 0xffff6b6b);
+      game.session.toast('Potion belt upgraded! (${game.profile.potionMax} potions)', icon: game.data.potion.icon, color: 0xffff6b6b);
     }
     final level = game.profile.level;
     for (final i in r.items) {

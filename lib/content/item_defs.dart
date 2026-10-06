@@ -88,7 +88,8 @@ class PowerDef {
   final String id;
   final String name;
 
-  /// The ability it modifies (informational; used for tooltips).
+  /// The ability it changes; the hook only fires for that ability. Null
+  /// means always active (e.g. damage reduction).
   final String? ability;
   final String description;
   final Map<String, double> params;
@@ -115,15 +116,9 @@ class LegendaryDef {
 }
 
 class MaterialDef {
-  MaterialDef.fromJson(JsonReader j)
-    : id = j.str('id'),
-      name = j.str('name'),
-      icon = j.str('icon'),
-      value = j.integer('value'),
-      description = j.str('description');
+  MaterialDef.fromJson(JsonReader j) : id = j.str('id'), name = j.str('name'), icon = j.str('icon'), description = j.str('description');
 
   final String id, name, icon;
-  final int value;
   final String description;
 }
 

@@ -26,23 +26,22 @@ class HeroProfile {
     this.xp = 0,
     Inventory? inventory,
     Map<String, QuestState>? quests,
-    Set<String>? waypoints,
+    required this.waypoints,
     Map<String, DayJobProgress>? dayJobs,
     this.potionMax = 3,
     this.potionCharges = 3,
     this.difficulty = 'normal',
     Set<String>? bossKills,
-    this.lastWaypoint = 'buckleburg_gate',
+    required this.lastWaypoint,
     this.playSeconds = 0,
     this.kills = 0,
     this.deaths = 0,
-    this.region = 'goblinwood',
+    required this.region,
     Set<String>? discovered,
     Set<String>? opened,
     this.version = currentVersion,
   }) : inventory = inventory ?? Inventory(),
        quests = quests ?? {},
-       waypoints = waypoints ?? {'buckleburg_gate'},
        dayJobs = dayJobs ?? {},
        bossKills = bossKills ?? {},
        discovered = discovered ?? {},
@@ -83,19 +82,24 @@ class HeroProfile {
   /// Creates a brand-new level 1 hero with starting gear equipped.
   factory HeroProfile.create(GameData data, String heroClass, String look, ItemFactory items) {
     final hero = data.heroes[heroClass]!;
+    final region = data.regions.firstWhere((r) => r.playable);
+    final start = region.startWaypoint!;
     final profile = HeroProfile(
       id: '${heroClass}_${DateTime.now().millisecondsSinceEpoch}',
       heroClass: heroClass,
       look: look,
       potionMax: data.potion.charges,
       potionCharges: data.potion.charges,
+      region: region.id,
+      lastWaypoint: start,
+      waypoints: {start},
     );
     for (final g in hero.startingGear) {
       final item = g.unique != null ? items.legendary(g.unique!, 1) : items.roll(level: 1, heroClass: heroClass, rarity: g.rarity, baseId: g.base);
       profile.inventory.addItem(item);
       profile.inventory.equip(item, data);
     }
-    profile.inventory.gold = 15;
+    profile.inventory.gold = data.progression.startingGold;
     return profile;
   }
 
@@ -141,11 +145,11 @@ class HeroProfile {
       potionCharges: ((j['potionCharges'] as num?) ?? 3).toInt(),
       difficulty: (j['difficulty'] as String?) ?? 'normal',
       bossKills: strings('bossKills'),
-      lastWaypoint: (j['lastWaypoint'] as String?) ?? 'buckleburg_gate',
+      lastWaypoint: j['lastWaypoint']! as String,
       playSeconds: ((j['playSeconds'] as num?) ?? 0).toDouble(),
       kills: ((j['kills'] as num?) ?? 0).toInt(),
       deaths: ((j['deaths'] as num?) ?? 0).toInt(),
-      region: (j['region'] as String?) ?? 'goblinwood',
+      region: j['region']! as String,
       discovered: strings('discovered'),
       opened: strings('opened'),
       version: ((j['version'] as num?) ?? 1).toInt(),

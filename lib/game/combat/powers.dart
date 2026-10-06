@@ -23,6 +23,14 @@ class PowerSet {
 
   bool has(String id) => _powers.containsKey(id);
   PowerDef? get(String id) => _powers[id];
+
+  /// The power [id] if it is active for [abilityId]: a power names the
+  /// ability it changes in items.json (no ability = always active).
+  PowerDef? forAbility(String id, String abilityId) {
+    final p = _powers[id];
+    return p != null && (p.ability == null || p.ability == abilityId) ? p : null;
+  }
+
   Iterable<PowerDef> get all => _powers.values;
 }
 

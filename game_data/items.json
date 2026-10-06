@@ -155,9 +155,9 @@
     }
   ],
   "materials": [
-    { "id": "copper_ore", "name": "Copper Ore", "icon": "mat_copper_ore", "value": 6, "description": "Shiny, heavy, and absolutely not edible. Hilda wants it." },
-    { "id": "sniffleleaf", "name": "Sniffleleaf", "icon": "mat_sniffleleaf", "value": 5, "description": "Smells like peppermint and regret. Granny brews it into potions." },
-    { "id": "goblin_tooth", "name": "Goblin Tooth", "icon": "mat_goblin_tooth", "value": 3, "description": "Goblins lose teeth constantly. Mostly to other goblins." },
-    { "id": "grizzly_honey", "name": "Grizzly Honey", "icon": "mat_honey", "value": 25, "description": "Extremely sticky. Extremely bear-adjacent." }
+    { "id": "copper_ore", "name": "Copper Ore", "icon": "mat_copper_ore", "description": "Shiny, heavy, and absolutely not edible. Hilda wants it." },
+    { "id": "sniffleleaf", "name": "Sniffleleaf", "icon": "mat_sniffleleaf", "description": "Smells like peppermint and regret. Granny brews it into potions." },
+    { "id": "goblin_tooth", "name": "Goblin Tooth", "icon": "mat_goblin_tooth", "description": "Goblins lose teeth constantly. Mostly to other goblins." },
+    { "id": "grizzly_honey", "name": "Grizzly Honey", "icon": "mat_honey", "description": "Extremely sticky. Extremely bear-adjacent." }
   ]
 }

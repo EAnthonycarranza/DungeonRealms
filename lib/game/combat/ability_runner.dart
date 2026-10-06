@@ -64,6 +64,8 @@ class AbilityRunner {
       telegraph = switch (a.telegraph!.shape) {
         'cone' => Telegraph.cone(origin: caster.ground.clone(), dir: lockedDir, range: a.range + 0.3, arcDegrees: a.arc, duration: windup),
         'line' => Telegraph.line(origin: caster.ground.clone(), dir: lockedDir, range: a.range, width: a.width, duration: windup),
+        // Ground areas draw their own warning; blasts around the caster need one.
+        'circle' when a.behavior == AbilityBehavior.summon => Telegraph.circle(origin: caster.ground.clone(), range: a.radius, duration: windup),
         _ => null,
       };
       if (telegraph != null) game.groundLayer.add(telegraph);
@@ -93,16 +95,14 @@ class AbilityRunner {
     switch (a.behavior) {
       case AbilityBehavior.projectile:
         _fire(caster, a, dir);
-        if (hero != null && a.id == hero.basicAbility?.id) {
-          final p = hero.powers.get('double_tap');
-          if (p != null && _rng.nextDouble() < p.param('chance', 0.25)) {
-            game.after(0.09, () => _fire(caster, a, dir.clone()..rotate(0.05)));
-          }
+        final doubleTap = hero?.powers.forAbility('double_tap', a.id);
+        if (doubleTap != null && _rng.nextDouble() < doubleTap.param('chance', 0.25)) {
+          game.after(0.09, () => _fire(caster, a, dir.clone()..rotate(0.05)));
         }
       case AbilityBehavior.projectileFan:
         var count = a.count;
         var spread = a.spread;
-        final p = hero?.powers.get('chewed_volley');
+        final p = hero?.powers.forAbility('chewed_volley', a.id);
         if (p != null) {
           count += p.param('extra', 3).toInt();
           spread += p.param('spreadBonus', 18);
@@ -117,8 +117,8 @@ class AbilityRunner {
         final center = a.target == 'self' ? caster.ground.clone() : _clampToRange(caster, aimPoint, a.range);
         var radius = a.radius;
         var effects = a.effects;
-        final bear = hero?.powers.get('bear_necessities');
-        if (bear != null && a.id == 'ranger_arrow_storm') {
+        final bear = hero?.powers.forAbility('bear_necessities', a.id);
+        if (bear != null) {
           radius *= 1 + bear.param('radiusBonus', 0.4);
           effects = [for (final e in effects) e.status == 'slow' ? StatusSpecOverride.slow(e, bear.param('slow', 0.6)) : e];
         }
@@ -154,7 +154,7 @@ class AbilityRunner {
             gravity: -80,
           );
         }
-        caster.say('Questionable mend!');
+        if (a.bark != null) caster.say(a.bark!);
       case AbilityBehavior.summon:
         if (a.bark != null) caster.say(a.bark!, duration: 3);
         if (a.pack != null && caster is EnemyEntity) game.spawns.summonPack(a.pack!, around: caster.ground, level: caster.level, leader: caster);
@@ -188,7 +188,7 @@ class AbilityRunner {
   void _fire(Actor caster, AbilityDef a, Vector2 dir) {
     final spec = a.projectile!;
     final hero = caster is HeroEntity ? caster : null;
-    final storm = hero?.powers.get('stormcaller');
+    final storm = hero?.powers.forAbility('stormcaller', a.id);
     game.entityLayer.add(
       Projectile(
         owner: caster,
@@ -204,7 +204,7 @@ class AbilityRunner {
         effects: a.effects,
         knockback: a.knockback,
         chargeGain: a.chargeGain,
-        onHitHook: storm != null && a.id == 'ranger_precision_shot'
+        onHitHook: storm != null
             ? (p, target, index) {
                 if (index == 0) chainLightning(game, caster, target, storm);
               }
@@ -254,7 +254,7 @@ class AbilityRunner {
       caster.faceDirection(-dir);
       if (move.length2 > 0.01) caster.faceDirection(dir);
       if (move.length2 <= 0.01) caster.faceDirection(keepFacing);
-      final flair = caster.powers.get('flair_trap');
+      final flair = caster.powers.forAbility('flair_trap', a.id);
       if (flair != null && caster.flairCooldown <= 0) {
         caster.flairCooldown = flair.param('cooldown', 4);
         game.groundLayer.add(

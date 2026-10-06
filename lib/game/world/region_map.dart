@@ -138,8 +138,6 @@ class RegionMap {
   final interactives = <PlacedTile>[];
   final gameplay = <MapObject>[];
 
-  String get regionId => tiled.properties.getValue<String>('region') ?? 'goblinwood';
-
   static String? _prop(CustomProperties p, String name) => p[name]?.value.toString();
 
   void _parseTilesets() {

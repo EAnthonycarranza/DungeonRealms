@@ -15,7 +15,6 @@
       "map": "goblinwood.tmx",
       "playable": true,
       "description": "Forest roads, goblin camps, hidden caves, merchant trouble, Grizzlefang.",
-      "ambient": "leaves",
       "waypoints": [
         { "id": "buckleburg_gate", "name": "Buckleburg Gate" },
         { "id": "wagon_crossroads", "name": "Wagon Crossroads" },
@@ -23,7 +22,19 @@
         { "id": "grizzlefang_hollow", "name": "Grizzlefang's Hollow" }
       ],
       "startWaypoint": "buckleburg_gate",
-      "townWaypoint": "buckleburg_gate"
+      "loadingTips": [
+        "Goblins are allergic to arrows.",
+        "Mining ore near goblins is brave. And loud.",
+        "Grizzlefang charges in straight lines. Walls do not move. Do the math.",
+        "Waypoint stones are safe. Goblins find them boring."
+      ],
+      "deathQuips": [
+        "Probably the goblins' fault.",
+        "The paperwork for this is enormous.",
+        "Have you tried not getting hit?",
+        "Granny Gristle is very disappointed.",
+        "Even the bear feels a little bad."
+      ]
     },
     { "id": "soggyroot", "name": "Soggyroot", "levels": [8, 14], "playable": false, "description": "Bioluminescent mushrooms, giant roots, poison pools, Mother Mush." },
     { "id": "bone_rattle_marches", "name": "Bone-Rattle Marches", "levels": [20, 26], "playable": false, "description": "Crypts, necromancers, soul fire, and skeletons with increasingly concerning job titles." },
@@ -85,6 +96,9 @@
       "cooldown": 90,
       "loot": "event_wagon",
       "xp": 150,
+      "npc": "pip_puddlefoot",
+      "startPrompt": "Defend the wagon!",
+      "runningText": "They're HERE! Do the shooty thing!",
       "startBark": "HERE THEY COME! Protect the wheels! The other wheels!",
       "successBark": "We did it! I mean, YOU did it! I supervised!",
       "failBark": "My wagon! It's... it's in pieces. More pieces. Ugh."

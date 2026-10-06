@@ -35,7 +35,8 @@ class _QuestLogPanelState extends State<QuestLogPanel> {
     final selected = quests.where((q) => q.id == _selected).firstOrNull ?? quests.firstOrNull;
     return ModalFrame(
       title: 'Quest Log',
-      subtitle: '${game.data.quests.where((q) => log.status(q.id) == QuestStatus.completed).length}/${game.data.quests.length} completed in Goblinwood',
+      subtitle:
+          '${game.data.quests.where((q) => log.status(q.id) == QuestStatus.completed).length}/${game.data.quests.length} completed in ${game.data.region(game.profile.region).name}',
       onClose: widget.onClose,
       maxWidth: 900,
       child: LayoutBuilder(

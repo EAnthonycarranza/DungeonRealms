@@ -40,14 +40,16 @@ class _InventoryPanelState extends State<InventoryPanel> {
 
   @override
   Widget build(BuildContext context) {
+    // Shops are run by the NPC offering the service (npcs.json "shop").
+    final shop = data.npcs.values.where((n) => n.services.contains(widget.mode)).firstOrNull;
     final title = switch (widget.mode) {
-      'salvage' => 'Hilda\'s Salvage Bench',
-      'sell' => 'Pip\'s Trading Post',
+      'salvage' => shop?.shopTitle ?? 'Salvage Bench',
+      'sell' => shop?.shopTitle ?? 'Trading Post',
       _ => 'Hero & Inventory',
     };
     final subtitle = switch (widget.mode) {
-      'salvage' => 'Break gear into Shiny Bits. Hilda enjoys this a little too much.',
-      'sell' => 'Pip buys anything. Pip has questionable judgment.',
+      'salvage' => shop?.shopBlurb ?? 'Break gear into Shiny Bits.',
+      'sell' => shop?.shopBlurb ?? 'Sell gear for gold.',
       _ => 'Tap an item to inspect it. Legendary powers change how skills work.',
     };
     return ModalFrame(

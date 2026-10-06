@@ -52,10 +52,11 @@ class SkillButtonFace extends StatelessWidget {
                 ],
               ),
             ),
-            Opacity(
-              opacity: locked ? 0.3 : 1,
-              child: IconImage(iconOverride ?? h?.icon ?? 'ability_quick_shot', size: size * 0.7),
-            ),
+            if ((iconOverride ?? h?.icon) != null)
+              Opacity(
+                opacity: locked ? 0.3 : 1,
+                child: IconImage((iconOverride ?? h?.icon)!, size: size * 0.7),
+              ),
             if (charge != null && !ultimateReady) CustomPaint(size: Size.square(size), painter: _RingPainter(charge!.clamp(0, 1), DR.gold)),
             if (cooling) ...[
               CustomPaint(size: Size.square(size), painter: _SweepPainter(h.cooldownFraction)),

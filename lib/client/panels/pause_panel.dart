@@ -15,9 +15,12 @@ class PausePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = game.profile;
     final minutes = (p.playSeconds / 60).floor();
+    final hero = game.data.heroes[p.heroClass]!;
+    final basic = game.data.abilities[hero.basicAbility];
+    final dodge = game.data.abilities[hero.dodgeAbility];
     return ModalFrame(
       title: 'Paused',
-      subtitle: 'Goblinwood will wait. Probably.',
+      subtitle: '${game.data.region(p.region).name} will wait. Probably.',
       onClose: onClose,
       maxWidth: 640,
       child: SingleChildScrollView(
@@ -65,7 +68,7 @@ class PausePanel extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Level ${p.level} • ${p.kills} goblins (and friends) bonked • ${p.deaths} heroic naps • ${minutes}m played • World: ${game.difficulty.name}',
+              'Level ${p.level} • ${p.kills} monsters bonked • ${p.deaths} heroic naps • ${minutes}m played • World: ${game.difficulty.name}',
               style: DR.body(14, color: DR.muted),
             ),
             const SizedBox(height: 16),
@@ -74,12 +77,12 @@ class PausePanel extends StatelessWidget {
               style: DR.body(11, color: DR.gold, weight: FontWeight.w900),
             ),
             const SizedBox(height: 6),
-            const _ControlsTable(
+            _ControlsTable(
               rows: [
                 ('Move', 'WASD / Arrow keys', 'Left thumb joystick'),
-                ('Quick Shot', 'Hold left mouse (or J)', 'Hold the big button'),
+                (basic?.name ?? 'Attack', 'Hold left mouse (or J)', 'Hold the big button'),
                 ('Skills', 'Q E R, ultimate F (aim with mouse)', 'Tap to auto-aim, drag to aim'),
-                ('Backflip', 'Space', 'Dodge button'),
+                (dodge?.name ?? 'Dodge', 'Space', 'Dodge button'),
                 ('Potion', 'H', 'Potion button'),
                 ('Talk / Mine / Open', 'G or Enter', 'Interact button'),
                 ('Inventory / Quests', 'I  /  L', 'Top-right buttons'),

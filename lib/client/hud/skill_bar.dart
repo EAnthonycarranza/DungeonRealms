@@ -16,6 +16,7 @@ class DesktopSkillBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = game.session;
     const size = 58.0;
+    final basic = game.data.abilities[game.data.heroes[game.profile.heroClass]!.basicAbility];
     Widget slot(AbilitySlotId id, String key) => ListenableBuilder(
       listenable: Listenable.merge([s.abilities, s.dodge, s.ultimateCharge]),
       builder: (_, _) {
@@ -37,8 +38,8 @@ class DesktopSkillBar extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Tooltip(
-            message: 'Quick Shot\nHold left mouse (or J) to fire at the cursor.',
-            child: SkillButtonFace(hud: null, size: size, keyLabel: 'LMB', iconOverride: 'ability_quick_shot'),
+            message: '${basic?.name ?? 'Attack'}\nHold left mouse (or J) to fire at the cursor.',
+            child: SkillButtonFace(hud: null, size: size, keyLabel: 'LMB', iconOverride: basic?.icon),
           ),
           const SizedBox(width: 10),
           slot(AbilitySlotId.skill1, 'Q'),
@@ -55,7 +56,8 @@ class DesktopSkillBar extends StatelessWidget {
             onTap: () => game.input.requestPotion(),
             child: ValueListenableBuilder<(int, int, double)>(
               valueListenable: s.potion,
-              builder: (_, p, _) => SkillButtonFace(hud: null, size: size, keyLabel: 'H', iconOverride: 'ability_potion', badge: '${p.$1}', pressed: p.$3 > 0),
+              builder: (_, p, _) =>
+                  SkillButtonFace(hud: null, size: size, keyLabel: 'H', iconOverride: game.data.potion.icon, badge: '${p.$1}', pressed: p.$3 > 0),
             ),
           ),
         ],

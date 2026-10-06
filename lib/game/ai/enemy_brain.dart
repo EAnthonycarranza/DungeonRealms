@@ -221,7 +221,7 @@ class EnemyBrain {
         case AbilityBehavior.charge:
           ok = dist >= 3.2 && dist <= a.range && _hasLos(target);
         case AbilityBehavior.healAllies:
-          ok = game.alliesOf(e).any((ally) => ally.alive && ally.hpFraction < 0.7 && ally.ground.distanceTo(e.ground) <= a.radius);
+          ok = game.alliesOf(e).any((ally) => ally.alive && ally.hpFraction < a.threshold && ally.ground.distanceTo(e.ground) <= a.radius);
         case AbilityBehavior.summon:
         case AbilityBehavior.buffSelf:
           ok = false; // Only via phase onEnter.

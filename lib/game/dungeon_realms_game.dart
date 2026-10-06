@@ -230,7 +230,7 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
             img,
             openImage: await propImage(openInfo),
             openInfo: openInfo,
-            lootTable: p.props['loot'] ?? 'hollow_chest',
+            lootTable: p.props['loot'] ?? (throw FormatException('chest "${p.name}" needs a "loot" property')),
             opened: profile.opened.contains(p.name),
           );
           entityLayer.add(chest);
@@ -478,14 +478,8 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
     hero.cancelGather();
     events.onHeroDied();
     final name = killer is EnemyEntity ? killer.def.name : 'Mysterious Forces';
-    const quips = [
-      'Probably the goblins\' fault.',
-      'The paperwork for this is enormous.',
-      'Have you tried not getting hit?',
-      'Granny Gristle is very disappointed.',
-      'Even the bear feels a little bad.',
-    ];
-    session.death.value = DeathState(killer: name, quip: quips[_rng.nextInt(quips.length)]);
+    final quips = data.region(profile.region).deathQuips;
+    session.death.value = DeathState(killer: name, quip: quips.isEmpty ? 'Ouch.' : quips[_rng.nextInt(quips.length)]);
     session.mood.value = PortraitMood.panic;
   }
 
@@ -503,19 +497,18 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
   }
 
   void onBossPhase(EnemyEntity boss, int phase) {
-    if (boss.def.isBoss) {
-      final subtitle = phase == 1 ? 'He called for snacks. The snacks have clubs.' : 'He found the honey. THIS SEEMS BAD.';
-      session.showBanner('PHASE ${phase + 1}', subtitle: subtitle, style: 'danger');
-    }
+    if (boss.def.isBoss) session.showBanner('PHASE ${phase + 1}', subtitle: boss.def.phases[phase].subtitle, style: 'danger');
   }
 
   void onBossDefeated(EnemyEntity boss) {
+    final before = profile.unlockedDifficulties(data).length;
     profile.bossKills.add('${profile.difficulty}:${boss.def.id}');
-    session.showBanner('${boss.def.name.toUpperCase()} DEFEATED', subtitle: 'Goblinwood breathes a sigh of relief', style: 'boss');
+    session.showBanner('${boss.def.name.toUpperCase()} DEFEATED', subtitle: '${data.region(profile.region).name} breathes a sigh of relief', style: 'boss');
     shake(10);
     final unlocked = profile.unlockedDifficulties(data);
-    if (unlocked.length > 1 && boss.def.id == 'grizzlefang') {
-      session.toast('New world difficulty unlocked: ${unlocked.last.name}! (Ask Captain Bramble)', color: 0xffff8a2b);
+    if (unlocked.length > before) {
+      final changer = data.npcs.values.where((n) => n.services.contains('respec_difficulty')).firstOrNull;
+      session.toast('New world difficulty unlocked: ${unlocked.last.name}!${changer == null ? '' : ' (Ask ${changer.name})'}', color: 0xffff8a2b);
     }
     saveSoon();
   }
@@ -754,7 +747,7 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
       slot: slot,
       abilityId: a.id,
       name: a.name,
-      icon: a.icon ?? 'ability_quick_shot',
+      icon: a.icon ?? '',
       description: a.description,
       cooldown: cd,
       remaining: a.isUltimate ? hero.ultimateMax - hero.ultimate : remaining,

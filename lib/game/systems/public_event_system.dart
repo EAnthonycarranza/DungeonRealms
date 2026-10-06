@@ -56,7 +56,7 @@ class PublicEventSystem {
       game.allies.add(entity);
     }
     game.session.showBanner(def.name.toUpperCase(), subtitle: def.description, style: 'event');
-    if (def.startBark != null) game.npcSay('pip_puddlefoot', def.startBark!);
+    if (def.npc != null && def.startBark != null) game.npcSay(def.npc!, def.startBark!);
   }
 
   Vector2 _ringPoint() {
@@ -101,7 +101,7 @@ class PublicEventSystem {
       _hudTimer = 0.2;
       game.session.event.value = EventHud(
         name: def.name,
-        description: '$remaining goblins left',
+        description: '$remaining attackers left',
         timeLeft: math.max(0, def.duration - t),
         targetName: target?.name,
         targetHp: target?.hpFraction ?? 1,
@@ -124,13 +124,13 @@ class PublicEventSystem {
     }
     if (success) {
       game.session.showBanner('EVENT COMPLETE', subtitle: def.name, style: 'quest');
-      if (def.successBark != null) game.npcSay('pip_puddlefoot', def.successBark!);
+      if (def.npc != null && def.successBark != null) game.npcSay(def.npc!, def.successBark!);
       game.hero.gainXp(def.xp.toDouble());
       if (def.loot != null) game.dropLoot(def.loot!, at: at, level: def.level + 1);
       game.reportEvent(def.id);
     } else {
-      game.session.showBanner('EVENT FAILED', subtitle: 'The goblins got away with the wheels', style: 'danger');
-      if (def.failBark != null) game.npcSay('pip_puddlefoot', def.failBark!);
+      game.session.showBanner('EVENT FAILED', subtitle: 'They got away with it. This time.', style: 'danger');
+      if (def.npc != null && def.failBark != null) game.npcSay(def.npc!, def.failBark!);
       for (final e in _spawned) {
         if (e.alive) {
           final s = e.position;

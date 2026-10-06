@@ -110,8 +110,7 @@
       "animation": "dodge",
       "distance": 3.2,
       "duration": 0.34,
-      "invulnerable": true,
-      "direction": "move_or_back"
+      "invulnerable": true
     },
 
     {
@@ -159,7 +158,8 @@
       "animation": "cast",
       "radius": 6,
       "amount": 0.25,
-      "condition": "ally_below_70"
+      "threshold": 0.7,
+      "bark": "Questionable mend!"
     },
     {
       "id": "shaman_mushroom_hex",
@@ -213,7 +213,6 @@
       "castTime": 0.6,
       "animation": "attack",
       "pack": "goblin_scouts",
-      "condition": "self_below_50_once",
       "bark": "LADS! A little help?!"
     },
     {
@@ -255,7 +254,8 @@
       "radius": 3.2,
       "damage": 0.4,
       "knockback": 2.5,
-      "bark": "RAAAWR! (Translation: get them, my snacks!)"
+      "bark": "RAAAWR! (Translation: get them, my snacks!)",
+      "telegraph": { "shape": "circle", "time": 1.0 }
     },
     {
       "id": "grizzlefang_slam",

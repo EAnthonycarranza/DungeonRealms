@@ -83,11 +83,16 @@ class NpcDef {
       color = j.strOr('color', '#ffffff')!,
       greeting = j.str('greeting'),
       barks = j.strings('barks'),
-      services = j.strings('services');
+      services = j.strings('services'),
+      shopTitle = j.has('shop') ? j.obj('shop').str('title') : null,
+      shopBlurb = j.has('shop') ? j.obj('shop').str('blurb') : null;
 
   final String id, name, title, sprite, color, greeting;
   final List<String> barks;
 
   /// salvage | refill_potions | sell | respec_difficulty
   final List<String> services;
+
+  /// Title and blurb of the shop panel for `salvage` / `sell` services.
+  final String? shopTitle, shopBlurb;
 }

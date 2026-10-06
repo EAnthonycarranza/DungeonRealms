@@ -1,10 +1,13 @@
 import 'json_reader.dart';
 
 class EnemyPhaseDef {
-  EnemyPhaseDef.fromJson(JsonReader j) : from = j.dbl('from'), onEnter = j.strOr('onEnter'), abilities = j.strings('abilities');
+  EnemyPhaseDef.fromJson(JsonReader j) : from = j.dbl('from'), onEnter = j.strOr('onEnter'), subtitle = j.strOr('subtitle'), abilities = j.strings('abilities');
 
   /// Phase starts when health fraction drops to or below this value.
   final double from;
+
+  /// Boss banner subtitle shown when this phase starts.
+  final String? subtitle;
   final String? onEnter;
   final List<String> abilities;
 }

@@ -12,7 +12,7 @@ import '../world/region_map.dart';
 /// is wiped and the hero has wandered off.
 class SpawnZone {
   SpawnZone(this.object)
-    : packId = object.prop('pack') ?? 'goblin_scouts',
+    : packId = object.prop('pack') ?? (throw FormatException('spawn zone "${object.name}" needs a "pack" property')),
       level = int.tryParse(object.prop('level') ?? '') ?? 1,
       respawn = double.tryParse(object.prop('respawn') ?? '') ?? 60;
 

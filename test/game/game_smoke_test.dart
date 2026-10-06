@@ -43,6 +43,58 @@ void main() {
     expect(game.session.loading.value, isFalse);
   });
 
+  testWithGame<DungeonRealmsGame>('every map object points at real content', create, (game) async {
+    await game.ready();
+    final map = game.map;
+    final problems = <String>[];
+    void need(bool ok, String message) {
+      if (!ok) problems.add(message);
+    }
+
+    final region = data.region(game.profile.region);
+    need(map.objectsOfType('player_start').isNotEmpty, 'no player_start');
+    for (final o in map.objectsOfType('spawn')) {
+      need(data.packs.containsKey(o.prop('pack')), 'spawn ${o.name}: unknown pack ${o.prop('pack')}');
+      need(int.tryParse(o.prop('level') ?? '') != null, 'spawn ${o.name}: needs a level');
+    }
+    for (final o in map.objectsOfType('npc')) {
+      need(data.npcs.containsKey(o.prop('npc')), 'npc object ${o.name}: unknown npc ${o.prop('npc')}');
+    }
+    for (final type in ['boss_arena', 'boss_spawn']) {
+      for (final o in map.objectsOfType(type)) {
+        need(data.enemies[o.prop('boss')]?.isBoss ?? false, '$type ${o.name}: unknown boss ${o.prop('boss')}');
+      }
+    }
+    for (final p in map.interactives) {
+      switch (p.type) {
+        case 'resource':
+          need(data.resources.containsKey(p.props['node']), 'resource ${p.name}: unknown node ${p.props['node']}');
+        case 'chest':
+          need(data.lootTables.containsKey(p.props['loot']), 'chest ${p.name}: unknown loot ${p.props['loot']}');
+        case 'waypoint':
+          need(region.waypoints.any((w) => w.id == p.props['waypoint']), 'waypoint ${p.name}: not in region ${region.id}');
+        case 'boss_gate':
+          need(data.enemies.containsKey(p.props['boss']), 'boss gate ${p.name}: unknown boss ${p.props['boss']}');
+      }
+    }
+    final stones = map.interactives.where((p) => p.type == 'waypoint').map((p) => p.props['waypoint']).toSet();
+    for (final w in region.waypoints) {
+      need(stones.contains(w.id), 'region waypoint ${w.id} has no stone on the map');
+    }
+    for (final e in data.events.values) {
+      need(map.object('event', e.zone) != null, 'event ${e.id}: no event zone ${e.zone} on the map');
+    }
+    final triggers = map.objectsOfType('trigger').map((o) => o.prop('discover')).toSet();
+    final chests = map.interactives.where((p) => p.type == 'chest').map((p) => p.name).toSet();
+    for (final q in data.quests) {
+      for (final o in q.objectives) {
+        if (o.type == 'discover') need(triggers.contains(o.target), 'quest ${q.id}: no trigger discovers ${o.target}');
+        if (o.type == 'open') need(chests.contains(o.target), 'quest ${q.id}: no chest named ${o.target}');
+      }
+    }
+    expect(problems, isEmpty);
+  });
+
   testWithGame<DungeonRealmsGame>('the hero walks with input and collides with the world', create, (game) async {
     await game.ready();
     final start = game.hero.ground.clone();
