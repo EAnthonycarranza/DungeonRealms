@@ -12,6 +12,7 @@ import '../input.dart';
 import '../render/character_sprite.dart';
 import '../session.dart';
 import 'actor.dart';
+import 'enemy.dart';
 import 'entity.dart';
 import 'interactables.dart';
 
@@ -129,8 +130,10 @@ class HeroEntity extends Actor {
   };
 
   void onHurt(double amount, Actor source) {
-    if (gatherTarget != null) {
-      game.session.toast('Interrupted! (Goblins hate mining.)');
+    final node = gatherTarget;
+    if (node != null) {
+      final who = source is EnemyEntity ? source.def.name : 'Somebody';
+      game.session.toast('Interrupted! ($who hates ${node.def.verb.toLowerCase()}.)');
       cancelGather();
     }
   }

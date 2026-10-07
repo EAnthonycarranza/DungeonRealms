@@ -15,6 +15,7 @@
       "map": "goblinwood.tmx",
       "playable": true,
       "description": "Forest roads, goblin camps, hidden caves, merchant trouble, Grizzlefang.",
+      "ambient": "leaves",
       "waypoints": [
         { "id": "buckleburg_gate", "name": "Buckleburg Gate" },
         { "id": "wagon_crossroads", "name": "Wagon Crossroads" },

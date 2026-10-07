@@ -172,7 +172,7 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
     _spawnHero();
     spawns.load(map);
     bosses.load(map, entityLayer.children.whereType<BossGateEntity>());
-    overlay.add(AmbientLeaves());
+    if (region.ambient == 'leaves') overlay.add(AmbientLeaves());
 
     camera.viewfinder.anchor = Anchor.center;
     _cameraTarget.setFrom(hero.position);
@@ -207,6 +207,7 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
     for (final p in map.props) {
       final img = await propImage(p.info);
       final sprite = PropSprite(p, img, iso.toScreenV(p.ground));
+      if (p.info.emitter == 'fire') overlay.add(FireEmitter(iso.toScreenV(p.ground)..y -= 6));
       if (p.info.isGroundLayer) {
         groundLayer.groundProps.add(sprite);
       } else {
@@ -620,7 +621,9 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
 
   void openChest(ChestEntity chest) {
     profile.opened.add(chest.placed.name);
-    dropLoot(chest.lootTable, at: chest.ground + Vector2(0.4, 0.4), level: math.max(profile.level, 5));
+    // A chest's `level` property sets a minimum item level for its loot.
+    final minLevel = int.tryParse(chest.placed.props['level'] ?? '') ?? 1;
+    dropLoot(chest.lootTable, at: chest.ground + Vector2(0.4, 0.4), level: math.max(profile.level, minLevel));
     particles.emit(
       x: chest.position.x,
       y: chest.position.y - 30,

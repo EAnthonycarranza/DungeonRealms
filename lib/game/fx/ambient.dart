@@ -37,6 +37,68 @@ class AmbientLeaves extends Component with HasGameReference<DungeonRealmsGame> {
   }
 }
 
+/// A flickering flame with embers and smoke for props whose tile has
+/// `emitter: fire` (campfires). [at] is the flame base in screen space.
+class FireEmitter extends Component with HasGameReference<DungeonRealmsGame> {
+  FireEmitter(this.at) : super(priority: 7);
+
+  final Vector2 at;
+  final _rng = math.Random();
+  double _t = 0;
+  double _smoke = 0;
+  static const _flames = [Color(0xffffe08a), Color(0xffffb347), Color(0xffff7a2b)];
+
+  @override
+  void update(double dt) {
+    _t -= dt;
+    _smoke -= dt;
+    if (_t > 0) return;
+    _t = 0.05;
+    if (!game.camera.visibleWorldRect.contains(Offset(at.x, at.y))) return;
+    game.particles.emit(
+      x: at.x + (_rng.nextDouble() - 0.5) * 22,
+      y: at.y,
+      color: _flames[_rng.nextInt(_flames.length)],
+      count: 2,
+      speed: 30,
+      life: 0.45,
+      size: 7,
+      gravity: -150,
+      drag: 2,
+      spread: 0.5,
+    );
+    if (_rng.nextDouble() < 0.2) {
+      game.particles.emit(
+        x: at.x,
+        y: at.y - 8,
+        color: const Color(0xffffd166),
+        count: 1,
+        speed: 60,
+        life: 1.0,
+        size: 2.5,
+        gravity: -90,
+        shape: ParticleShape.spark,
+        spread: 1.2,
+      );
+    }
+    if (_smoke <= 0) {
+      _smoke = 0.4;
+      game.particles.emit(
+        x: at.x,
+        y: at.y - 26,
+        color: const Color(0x44706a64),
+        count: 1,
+        speed: 12,
+        life: 2.4,
+        size: 10,
+        gravity: -22,
+        drag: 0.4,
+        spread: 0.4,
+      );
+    }
+  }
+}
+
 /// One arrow from Arrow Storm, falling onto [target] (screen space).
 class FallingArrowFx extends Component with HasGameReference<DungeonRealmsGame> {
   FallingArrowFx(this.target) : super(priority: 6);

@@ -21,6 +21,7 @@ class RegionDef {
       map = j.strOr('map'),
       playable = j.boolOr('playable', false),
       description = j.str('description'),
+      ambient = j.strOr('ambient'),
       waypoints = [for (final w in j.objects('waypoints')) WaypointDef.fromJson(w)],
       startWaypoint = j.strOr('startWaypoint'),
       loadingTips = j.strings('loadingTips'),
@@ -31,6 +32,9 @@ class RegionDef {
   final String? map;
   final bool playable;
   final String description;
+
+  /// Ambient effect over the camera view: `leaves` (or none).
+  final String? ambient;
   final List<WaypointDef> waypoints;
 
   /// Where new heroes start (and the waypoint they know from the outset).

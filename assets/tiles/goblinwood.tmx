@@ -1268,7 +1268,7 @@
   <object id="1045" name="hollow_chest" type="chest" gid="164" x="3761.6" y="1393.6" width="110" height="100">
    <properties>
     <property name="loot" value="hollow_chest"/>
-    <property name="respawn" value="0"/>
+    <property name="level" value="5"/>
    </properties>
   </object>
   <object id="1046" type="resource" gid="124" x="3883.6" y="1336.4" width="120" height="110">

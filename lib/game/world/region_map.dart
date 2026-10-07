@@ -8,7 +8,6 @@ class PropTileInfo {
   PropTileInfo({
     required this.gid,
     required this.name,
-    required this.kind,
     required this.imageSource,
     required this.width,
     required this.height,
@@ -23,7 +22,6 @@ class PropTileInfo {
 
   final int gid;
   final String name;
-  final String kind;
   final String imageSource;
   final int width, height;
 
@@ -158,7 +156,6 @@ class RegionMap {
         final info = PropTileInfo(
           gid: first + tile.localId,
           name: name,
-          kind: tile.type ?? 'decor',
           imageSource: tile.image!.source!,
           width: (tile.image!.width ?? 0).toInt(),
           height: (tile.image!.height ?? 0).toInt(),

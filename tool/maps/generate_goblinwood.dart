@@ -669,7 +669,7 @@ void setPieces(World w) {
     layer: 'interactives',
     type: 'chest',
     objName: 'hollow_chest',
-    props: {'loot': 'hollow_chest', 'respawn': '0'},
+    props: {'loot': 'hollow_chest', 'level': '5'},
   );
 
   // --- Grizzlefang's Hollow -------------------------------------------------

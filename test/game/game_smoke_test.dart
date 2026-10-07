@@ -52,6 +52,7 @@ void main() {
     }
 
     final region = data.region(game.profile.region);
+    need(map.tiled.properties.getValue<String>('region') == region.id, 'map "region" property should be ${region.id}');
     need(map.objectsOfType('player_start').isNotEmpty, 'no player_start');
     for (final o in map.objectsOfType('spawn')) {
       need(data.packs.containsKey(o.prop('pack')), 'spawn ${o.name}: unknown pack ${o.prop('pack')}');
@@ -63,6 +64,7 @@ void main() {
     for (final type in ['boss_arena', 'boss_spawn']) {
       for (final o in map.objectsOfType(type)) {
         need(data.enemies[o.prop('boss')]?.isBoss ?? false, '$type ${o.name}: unknown boss ${o.prop('boss')}');
+        if (type == 'boss_arena') need(int.tryParse(o.prop('level') ?? '') != null, 'boss arena ${o.name}: needs a level');
       }
     }
     for (final p in map.interactives) {

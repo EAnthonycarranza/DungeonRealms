@@ -34,7 +34,12 @@ class BossSystem {
     for (final zone in map.objectsOfType('boss_arena')) {
       final bossId = zone.prop('boss') ?? zone.name;
       final spawn = map.gameplay.where((o) => o.type == 'boss_spawn' && o.prop('boss') == bossId).firstOrNull?.center ?? zone.center;
-      final arena = BossArena(zone, bossId, int.tryParse(zone.prop('level') ?? '') ?? 8, spawn);
+      final arena = BossArena(
+        zone,
+        bossId,
+        int.tryParse(zone.prop('level') ?? '') ?? (throw FormatException('boss arena "${zone.name}" needs a "level" property')),
+        spawn,
+      );
       arena.gates.addAll(gates.where((g) => g.bossId == bossId));
       game.collision.setTagEnabled('gate:$bossId', false);
       arenas.add(arena);
