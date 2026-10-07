@@ -75,9 +75,12 @@ example 844×390).
 
 ## UI code (`lib/client`)
 
-- Mobile first. Aim for touch targets of 44 px or more, and make every
-  screen fit a short landscape phone with no essential button below the
-  fold.
+- Phones first: iOS and Android are the targets. Aim for touch targets of
+  44 px or more, make every screen fit a short landscape phone (844×390) with
+  no essential button below the fold, keep content inside `SafeArea`, and
+  give every new screen an Android back behavior.
+- Don't use web-only APIs (`dart:html`, `package:web`) or anything that
+  assumes a mouse or keyboard.
 - Every keyboard shortcut has a touch equivalent and is listed in the pause
   menu's controls table.
 - Colors, fonts and buttons come from `theme.dart` (`DR` palette,

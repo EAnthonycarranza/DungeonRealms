@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -26,7 +28,7 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   late final DungeonRealmsGame game = DungeonRealmsGame(data: widget.data, profile: widget.profile, saves: widget.saves);
   final _focus = FocusNode(debugLabel: 'game');
 
@@ -42,14 +44,47 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     input.touchMode = defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS;
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _focus.dispose();
     _gameFocus.dispose();
     super.dispose();
+  }
+
+  // Phone life ---------------------------------------------------------------
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!game.isLoaded) return;
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
+        // A call, the notification shade or the home button: the fight waits.
+        _openPauseMenu();
+        // The OS may end a backgrounded app without warning.
+        if (state != AppLifecycleState.inactive) unawaited(game.saveNow());
+      case AppLifecycleState.resumed:
+      case AppLifecycleState.detached:
+        break;
+    }
+  }
+
+  void _openPauseMenu() {
+    final s = game.session;
+    final busy = panels.current != PanelKind.none || s.dialog.value != null || s.death.value != null || s.waypointPicker.value || s.shop.value != null;
+    if (!busy) panels.open(PanelKind.pause);
+    input.clear();
+  }
+
+  /// Android back: close whatever is open, otherwise open the pause menu.
+  void _onBack() {
+    if (!panels.handleKey(LogicalKeyboardKey.escape, game)) panels.open(PanelKind.pause);
   }
 
   Vector2? _screenToWorld(Offset local) {
@@ -143,29 +178,35 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: DR.bg,
-      body: Focus(
-        focusNode: _focus,
-        autofocus: true,
-        onKeyEvent: _onKey,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Listener(
-              onPointerDown: _onPointer,
-              onPointerMove: _onPointer,
-              onPointerHover: _onPointer,
-              onPointerUp: _onPointer,
-              onPointerCancel: _onPointer,
-              child: MouseRegion(
-                cursor: SystemMouseCursors.precise,
-                child: GameWidget(game: game, focusNode: _gameFocus, autofocus: false),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _onBack();
+      },
+      child: Scaffold(
+        backgroundColor: DR.bg,
+        body: Focus(
+          focusNode: _focus,
+          autofocus: true,
+          onKeyEvent: _onKey,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Listener(
+                onPointerDown: _onPointer,
+                onPointerMove: _onPointer,
+                onPointerHover: _onPointer,
+                onPointerUp: _onPointer,
+                onPointerCancel: _onPointer,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.precise,
+                  child: GameWidget(game: game, focusNode: _gameFocus, autofocus: false),
+                ),
               ),
-            ),
-            Hud(game: game, panels: panels),
-            PanelHost(game: game, panels: panels, onQuit: widget.onQuit),
-          ],
+              Hud(game: game, panels: panels),
+              PanelHost(game: game, panels: panels, onQuit: widget.onQuit),
+            ],
+          ),
         ),
       ),
     );

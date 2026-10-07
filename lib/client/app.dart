@@ -47,6 +47,9 @@ class DungeonRealmsApp extends StatelessWidget {
       title: 'Dungeon Realms',
       debugShowCheckedModeBanner: false,
       theme: DR.theme(),
+      // The HUD is laid out for game readability; let system font scaling
+      // nudge text but not break layouts.
+      builder: (context, child) => MediaQuery.withClampedTextScaling(minScaleFactor: 0.9, maxScaleFactor: 1.15, child: child!),
       home: _Boot(saves: saves ?? LocalSaveRepository(), quickstart: quickstart, devStart: devStart),
     );
   }

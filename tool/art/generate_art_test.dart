@@ -5,7 +5,9 @@
 // Optionally limit what is generated (comma separated):
 //   ART=terrain,props flutter test tool/art/generate_art_test.dart
 //
-// Groups: terrain, decor, props, sprites, icons
+// Groups: terrain, decor, props, sprites, icons, appicon
+//
+// `appicon` writes the launcher icons into android/, ios/ and web/.
 //
 // Everything written here is placeholder-quality but production-shaped art:
 // the game only consumes PNGs + metadata, so any file can later be replaced by
@@ -15,6 +17,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'app_icon.dart';
 import 'characters.dart';
 import 'decor.dart';
 import 'icons.dart';
@@ -35,6 +38,7 @@ void main() {
       await generateCharacters('assets/images/sprites', only: ids);
     }
     if (wants('icons')) await generateIcons('assets/images/icons');
+    if (wants('appicon')) await generateAppIcons('.');
     // Not part of the default run: ART=mappreview
     if (only.contains('mappreview')) {
       await renderMapPreview('assets/tiles/goblinwood.tmx', 'build/art_preview/goblinwood_map.png');

@@ -52,6 +52,9 @@ class _Delayed {
 class DungeonRealmsGame extends FlameGame implements GameCommands {
   DungeonRealmsGame({required this.data, required this.profile, required this.saves, GameSession? session}) : session = session ?? GameSession() {
     this.session.commands = this;
+    // Flame would resume the engine when the app returns, even behind an open
+    // pause menu. GameScreen opens the pause menu on backgrounding instead.
+    pauseWhenBackgrounded = false;
   }
 
   @override
@@ -186,9 +189,9 @@ class DungeonRealmsGame extends FlameGame implements GameCommands {
   }
 
   Future<void> _loadSheets() async {
+    // Only the hero's current look: every sheet is a big texture on a phone.
     final ids = <String>{
-      for (final l in data.heroes[profile.heroClass]!.looks)
-        if (l.sprite != null) l.sprite!,
+      data.heroes[profile.heroClass]!.look(profile.look).sprite!,
       for (final e in data.enemies.values) e.sprite,
       for (final n in data.npcs.values) n.sprite,
     };

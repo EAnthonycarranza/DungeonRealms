@@ -13,6 +13,12 @@ Goblinwood, goblins and combat that feels good.
 | 04 Persistence | Supabase auth, hero saves, inventory, quest progress, gear | ⏭ Next |
 | 05 Multiplayer | 2 players → 4-player dungeon → shared zones → bosses → raids | Later |
 
+**Platforms:** iOS and Android from one Dart codebase. The Android release APK
+and App Bundle build locally and in CI; the iOS release builds in CI on macOS
+(unsigned). Both apps have their own icons, dark launch screens, landscape
+lock, full screen, notch-safe HUD, back button handling, and pause-and-save
+when you leave the app.
+
 ## What phases 01–03 delivered
 
 - **Shell**: title, hero select (8 heroes, Ranger playable with 2 looks),
@@ -54,11 +60,19 @@ Goblinwood, goblins and combat that feels good.
 - The *Angry Trees* difficulty mechanic is a placeholder.
 - No instanced dungeon yet; Grizzlefang's cave is scenery.
 - The other seven heroes are menu entries only.
+- Not yet play-tested on physical phones (performance, feel of the touch
+  controls). Character sheets take about 170 MB of texture memory; trimming
+  empty space from the sprite atlases would roughly halve that.
+- Phase 04 will need the `INTERNET` permission in the Android release
+  manifest (the game is offline today).
 
 ## Suggested next tasks
 
 Small, testable steps, roughly in order:
 
+0. **Store readiness**: play-test on a few real phones (including an older
+   Android), create the upload keystore and App Store team, then ship to
+   TestFlight and a Play internal testing track.
 1. **Audio**: hit, shot, UI and boss cues, plus Goblinwood ambience, with a
    volume setting.
 2. **Blacksmithing and Alchemy**: upgrade or reroll gear with ore and Shiny

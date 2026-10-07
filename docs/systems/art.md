@@ -17,6 +17,7 @@ flutter test tool/art/generate_art_test.dart                       # everything
 ART=props flutter test tool/art/generate_art_test.dart             # one group
 ART=sprites SPRITES=goblin_grunt,grizzlefang flutter test tool/art/generate_art_test.dart
 ART=mappreview flutter test tool/art/generate_art_test.dart        # whole-map render
+ART=appicon flutter test tool/art/generate_art_test.dart           # launcher icons
 ```
 
 | Group | Source | Writes |
@@ -26,6 +27,7 @@ ART=mappreview flutter test tool/art/generate_art_test.dart        # whole-map r
 | `props` | `props.dart` | `assets/tiles/props/<name>.png` + `assets/tiles/props.tsx` |
 | `sprites` | `characters.dart`, `rig_humanoid.dart`, `rig_bear.dart` | `assets/images/sprites/<id>.png` + `<id>.json` |
 | `icons` | `icons.dart` | `assets/images/icons/<id>.png` |
+| `appicon` | `app_icon.dart` | Android launcher icons (legacy + adaptive layers) in `android/app/src/main/res/mipmap-*`, the iOS icon set and launch logo in `ios/Runner/Assets.xcassets`, web icons |
 | `mappreview` | `map_preview.dart` | `build/art_preview/goblinwood_map.png` (not part of the default run) |
 
 Contact sheets for checking the results by eye go to `build/art_preview/`

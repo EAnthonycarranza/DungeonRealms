@@ -2,6 +2,7 @@
 //
 // The generator runs inside `flutter test` so it can use dart:ui (the same
 // Canvas API the game uses) to draw, and dart:io to write PNG files.
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 import 'dart:typed_data';
@@ -30,6 +31,67 @@ Future<void> savePng(ui.Image image, String path) async {
   final file = File(path);
   file.parent.createSync(recursive: true);
   file.writeAsBytesSync(data!.buffer.asUint8List());
+}
+
+/// Writes [image] as an 8-bit RGB PNG with no alpha channel. App stores
+/// reject app icons that carry alpha, and dart:ui only encodes RGBA. The
+/// image must be fully opaque.
+Future<void> savePngOpaque(ui.Image image, String path) async {
+  final rgba = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!.buffer.asUint8List();
+  final w = image.width, h = image.height;
+  final raw = Uint8List(h * (1 + w * 3));
+  var o = 0;
+  for (var y = 0; y < h; y++) {
+    raw[o++] = 0; // scanline filter: none
+    for (var x = 0; x < w; x++) {
+      final i = (y * w + x) * 4;
+      raw[o++] = rgba[i];
+      raw[o++] = rgba[i + 1];
+      raw[o++] = rgba[i + 2];
+    }
+  }
+  final out = BytesBuilder();
+  void chunk(String type, List<int> body) {
+    final typed = [...ascii.encode(type), ...body];
+    out
+      ..add((ByteData(4)..setUint32(0, body.length)).buffer.asUint8List())
+      ..add(typed)
+      ..add((ByteData(4)..setUint32(0, _crc32(typed))).buffer.asUint8List());
+  }
+
+  out.add(const [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  // Width, height, 8-bit depth, color type 2 (RGB), default compression/filter/interlace.
+  chunk(
+    'IHDR',
+    (ByteData(13)
+          ..setUint32(0, w)
+          ..setUint32(4, h)
+          ..setUint8(8, 8)
+          ..setUint8(9, 2))
+        .buffer
+        .asUint8List(),
+  );
+  chunk('IDAT', zlib.encode(raw));
+  chunk('IEND', const []);
+  final file = File(path);
+  file.parent.createSync(recursive: true);
+  file.writeAsBytesSync(out.takeBytes());
+}
+
+final List<int> _crcTable = List<int>.generate(256, (n) {
+  var c = n;
+  for (var k = 0; k < 8; k++) {
+    c = (c & 1) != 0 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  }
+  return c;
+});
+
+int _crc32(List<int> bytes) {
+  var c = 0xffffffff;
+  for (final b in bytes) {
+    c = _crcTable[(c ^ b) & 0xff] ^ (c >>> 8);
+  }
+  return (c ^ 0xffffffff) & 0xffffffff;
 }
 
 /// Loads a PNG/WebP from disk into a dart:ui image.

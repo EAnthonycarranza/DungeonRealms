@@ -1,7 +1,8 @@
 # Notes for AI coding agents
 
-Dungeon Realms is a Flutter + Flame isometric action RPG. The architecture is
-the project's permanent memory: don't reinvent it, extend it.
+Dungeon Realms is a Flutter + Flame isometric action RPG for **iOS and
+Android**. The architecture is the project's permanent memory: don't reinvent
+it, extend it.
 
 ## Read first
 
@@ -20,15 +21,17 @@ flutter pub get
 dart format lib test tool                     # 160 columns (analysis_options.yaml)
 flutter analyze                               # must report no issues
 flutter test                                  # must pass
-flutter run -d chrome
-flutter build web --release
+flutter run                                   # on a connected phone or emulator
+flutter build apk --release                   # Android (needs the Android SDK)
+flutter build ios --release --no-codesign     # iOS (macOS + Xcode only; CI does this)
+flutter run -d chrome                         # quick checks in a browser
 dart run tool/maps/generate_goblinwood.dart   # regenerate the map
-ART=props flutter test tool/art/generate_art_test.dart   # regenerate art (groups: terrain, decor, props, sprites, icons, mappreview)
+ART=props flutter test tool/art/generate_art_test.dart   # regenerate art (groups: terrain, decor, props, sprites, icons, appicon, mappreview)
 ```
 
-Fast manual checks: open the web build with `?quickstart`, or in debug and
-profile builds `?at=<waypoint id>&level=<n>` (for example
-`?at=snagtooth_camp&level=6`).
+Fast manual checks: `--dart-define=QUICKSTART=true`, and in debug and profile
+builds `--dart-define=START_AT=<waypoint id> --dart-define=START_LEVEL=<n>`
+(on web: `?quickstart`, `?at=snagtooth_camp&level=6`).
 
 ## Rules that matter most
 
@@ -45,5 +48,7 @@ profile builds `?at=<waypoint id>&level=<n>` (for example
   never imports `client`; the UI talks to the game through `GameSession`,
   `GameCommands` and `InputState`.
 - **World space.** Simulate in tiles (`ground`), render through `Iso`.
+- **Phones first.** Test at phone size in landscape, keep UI in `SafeArea`,
+  handle the Android back button, and never use web-only APIs.
 - **Generated assets.** Don't hand-edit generated PNGs, sprite JSON or the
   map; change `tool/art` or `tool/maps` and rerun.

@@ -21,7 +21,7 @@ class Hud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = game.session;
-    return LayoutBuilder(
+    final hud = LayoutBuilder(
       builder: (context, c) {
         final compact = c.maxHeight < 560 || c.maxWidth < 820;
         final clusterScale = compact ? (c.maxHeight / 560).clamp(0.72, 1.0) : 1.0;
@@ -113,14 +113,21 @@ class Hud extends StatelessWidget {
                     ),
                   ),
                 ),
-              ValueListenableBuilder<bool>(
-                valueListenable: s.loading,
-                builder: (_, loading, _) => loading ? _LoadingOverlay(region: game.data.region(game.profile.region)) : const SizedBox.shrink(),
-              ),
             ],
           ),
         );
       },
+    );
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Controls and readouts keep clear of notches and the home indicator.
+        SafeArea(child: hud),
+        ValueListenableBuilder<bool>(
+          valueListenable: s.loading,
+          builder: (_, loading, _) => loading ? _LoadingOverlay(region: game.data.region(game.profile.region)) : const SizedBox.shrink(),
+        ),
+      ],
     );
   }
 }
