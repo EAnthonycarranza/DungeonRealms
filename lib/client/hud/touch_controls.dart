@@ -202,7 +202,8 @@ class TouchActionCluster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = game.session;
-    final big = 92.0 * scale, mid = 64.0 * scale, small = 56.0 * scale;
+    // Even at the smallest cluster scale (0.72) every button stays at least 44 px.
+    final big = 92.0 * scale, mid = 64.0 * scale, small = 62.0 * scale;
     final w = 330.0 * scale, h = 270.0 * scale;
     final cx = w - 20 * scale - big / 2, cy = h - 18 * scale - big / 2;
     Widget at(double dx, double dy, double size, Widget child) => Positioned(left: cx + dx * scale - size / 2, top: cy + dy * scale - size / 2, child: child);
